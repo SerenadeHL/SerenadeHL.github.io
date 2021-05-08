@@ -22,7 +22,9 @@
 
   <!-- 页面元数据 -->
   
-  <title>Serenade&#39;s Blog</title>
+  <title>Android启动流程 - Serenade&#39;s Blog</title>
+  
+    <meta name="keywords" content="Android">
   
 
   
@@ -438,12 +440,63 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     
     
     
+      <h1 class="title">
+        Android启动流程
+      </h1>
+      <div class='new-meta-box'>
+        
+          
+            
+<div class='new-meta-item author'>
+  <a class='author' href="/" rel="nofollow">
+    <img no-lazy src="">
+    <p>请设置文章作者</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：May 8, 2021</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class="new-meta-item browse leancloud">
+    <a class='notlink'>
+      
+      <div id="lc-pv" data-title="Android启动流程" data-path="/2021/05/08/Android%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">
+        <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
+        <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+        次浏览
+      </div>
+    </a>
+  </div>
+
+
+          
+        
+      </div>
+    
   </div>
 
 
   
   
-  <h1 id="App启动流程"><a href="#App启动流程" class="headerlink" title="App启动流程"></a>App启动流程</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">participant Activity</span><br><span class="line">participant Instrumentation</span><br><span class="line">participant AMS</span><br><span class="line">participant ActivityStarter</span><br><span class="line">participant ActivityStackSupervisor</span><br><span class="line">participant Looper</span><br><span class="line">participant ActivityThread</span><br><span class="line">participant ActivityManager</span><br><span class="line">participant BinderInternal</span><br><span class="line"></span><br><span class="line">Activity-&gt;Instrumentation:startActivityForResult()</span><br><span class="line">Instrumentation-&gt;AMS:startActivity()</span><br><span class="line">AMS-&gt;ActivityStarter:startActivityAsUser()</span><br><span class="line">ActivityStarter-&gt;ActivityStarter:execute()</span><br><span class="line">ActivityStarter-&gt;ActivityStarter:startActivityMayWait()</span><br><span class="line">ActivityStarter-&gt;ActivityStackSupervisor:getActivityMetricsLogger().notifyActivityLaunching()</span><br><span class="line">ActivityStarter-&gt;ActivityStackSupervisor:resolveIntent():ResolveInfo</span><br><span class="line">ActivityStarter-&gt;ActivityStackSupervisor:resolveActivity():ActivityInfo</span><br><span class="line">ActivityStarter-&gt;ActivityStackSupervisor:mFocusedStack:ActivityStack</span><br><span class="line">ActivityStarter-&gt;ActivityStarter:startActivity()</span><br><span class="line">ActivityStarter-&gt;AMS:getRecordForAppLocked()检查调用者是否存在并获取调用者pid和uid</span><br><span class="line">ActivityStarter-&gt;ActivityStackSupervisor:isInAnyStackLocked(token)通过调用startActivity页面的mToken获取调用者的ActivityRecord</span><br><span class="line">note over ActivityStarter:检查intent.getFlags()</span><br><span class="line">note over ActivityStarter:检查intent.getComponent()</span><br><span class="line">note over ActivityStarter:检查ActivityInfo</span><br><span class="line">ActivityStarter-&gt;ActivityStackSupervisor:checkStartAnyActivityPermission()检查是否有启动权限</span><br><span class="line">ActivityStarter-&gt;AMS:mIntentFirewall.checkStartActivity()检查是否有被Intent防火墙拦截</span><br><span class="line">note over ActivityStarter:新建ActivityRecord</span><br><span class="line">ActivityStarter-&gt;ActivityStarter:startActivity()</span><br><span class="line">ActivityStarter-&gt;ActivityStarter:startActivityUnchecked()，先处理CLEAR_TOP情况，</span><br><span class="line">ActivityThread-&gt;ActivityThread: main()</span><br><span class="line">ActivityThread-&gt;Looper:prepareMainLooper()</span><br><span class="line">ActivityThread-&gt;ActivityThread: attach()</span><br><span class="line">ActivityThread-&gt;ActivityManager: getService()</span><br><span class="line">ActivityManager--&gt;ActivityThread: IActivityManager(AMS)</span><br><span class="line">ActivityThread-&gt;AMS: attachApplication()</span><br><span class="line">AMS-&gt;AMS: attachApplicationLocked()</span><br><span class="line">note right of AMS:attachApplicationLocked查找ProcessRecord</span><br><span class="line">ActivityThread-&gt;BinderInternal: addGcWatcher()</span><br><span class="line">note right of BinderInternal: 当 dalvikUsed&gt;3*dalvikMax/4 时\n调用AMS.releaseSomeActivities()\n释放内存\n触发被释放App的LowMemoryKill</span><br><span class="line">ActivityThread-&gt;Looper:loop()</span><br></pre></td></tr></table></figure>
+  <h1 id="Android启动流程"><a href="#Android启动流程" class="headerlink" title="Android启动流程"></a>Android启动流程</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">STEP0[按下电源键]--&gt;</span><br><span class="line">STEP1[BootLoader加载固化代码]--&gt;</span><br><span class="line">STEP2[LinuxKernel]--&gt;</span><br><span class="line">STEP3[启动init进程]--&gt;</span><br><span class="line">STEP4[启动ServiceManager]--&gt;</span><br><span class="line">STEP5[解析init.rc]--&gt;</span><br><span class="line">STEP6[孵化zygote进程]--&gt;</span><br><span class="line">STEP7[fork SystemServer进程]</span><br></pre></td></tr></table></figure>
+
+
   
   
     
@@ -460,7 +513,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
               
             
               
-                <p>本文永久链接是：<a href=http://example.com/2021/04/28/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/>http://example.com/2021/04/28/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</a></p>
+                <p>本文永久链接是：<a href=http://example.com/2021/05/08/Android%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/>http://example.com/2021/05/08/Android%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</a></p>
               
             
           </blockquote>
@@ -477,10 +530,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-04-28T20:17:09+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-05-08T12:34:01+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：Apr 28, 2021</p>
+    <p>更新于：May 8, 2021</p>
   </a>
 </div>
 
@@ -488,6 +541,9 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         
           
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Android/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Android</p></a></div>
+
 
         
       
@@ -499,7 +555,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/04/28/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/&title= - Serenade's Blog&summary="
+          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/05/08/Android%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/&title=Android启动流程 - Serenade's Blog&summary="
           
           >
           
@@ -511,7 +567,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://example.com/2021/04/28/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/&title= - Serenade's Blog&summary="
+          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://example.com/2021/05/08/Android%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/&title=Android启动流程 - Serenade's Blog&summary="
           
           >
           
@@ -523,7 +579,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/04/28/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/&title= - Serenade's Blog&summary="
+          target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/05/08/Android%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/&title=Android启动流程 - Serenade's Blog&summary="
           
           >
           
@@ -553,11 +609,11 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
     <div class="prev-next">
       
-        <a class='prev' href='/2021/04/29/Android%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/'>
-          <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i></p>
-          <p class='content'>Android启动流程123456789graph TDSTEP0[按下电源键]--&gt;STEP1[BootLoader加载固化代码]--&gt;STEP2[LinuxKernel]--&g...</p>
-        </a>
       
+        <a class='next' href='/2021/05/08/App%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/'>
+          <p class='title'>App启动流程<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'>App启动流程1234567891011121314151617181920212223242526272829303132333435363738394041participant Activ...</p>
+        </a>
       
     </div>
   
@@ -617,8 +673,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 <script>
   window.pdata={}
-  pdata.ispage=false;
-  pdata.postTitle="";
+  pdata.ispage=true;
+  pdata.postTitle="Android启动流程";
   pdata.commentPath="";
   pdata.commentPlaceholder="";
   // header 这里无论是否开启pjax都需要
