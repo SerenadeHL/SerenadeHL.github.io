@@ -5,8 +5,6 @@
   <!-- SEO相关 -->
   
     
-      <meta name="robots" content="noindex,follow">
-    
   
   <!-- 渲染优化 -->
   <meta http-equiv='x-dns-prefetch-control' content='on' />
@@ -24,7 +22,9 @@
 
   <!-- 页面元数据 -->
   
-  <title>Archive - Serenade&#39;s Blog</title>
+  <title>Activity显示流程 - Serenade&#39;s Blog</title>
+  
+    <meta name="keywords" content="Android">
   
 
   
@@ -104,7 +104,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <body>
     
 
-<header id="l_header" class="l_header auto shadow blur " style='opacity: 0' >
+<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
   <div class='container'>
   <div id='wrapper'>
     <div class='nav-sub'>
@@ -355,7 +355,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div id="l_cover">
   
     
-        <div id="half" class='cover-wrapper  dock' style="display: ;">
+        <div id="full" class='cover-wrapper post dock' style="display: none;">
           
             <div class='cover-bg lazyload placeholder' data-bg="https://p26-tt.byteimg.com/origin/pgc-image/5ae0b0aa2cf445ef93bf779565c6935c.jpeg"></div>
           
@@ -431,47 +431,243 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
           
 
 <div class='l_main'>
-	
-	  <article id="arc" class="post article white-box reveal shadow">
-			
-			
-				
-				
-					
-						
-						<h2>2021</h2>
-					
-						<div class='timenode'>
-								<a class="meta" href="/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/">
-									<time>05-08</time>
-									
-										Activity显示流程
-									
-									
-									
-									
-								</a>
-						</div>
-				
-			
-				
-				
-					
-						<div class='timenode'>
-								<a class="meta" href="/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/">
-									<time>05-08</time>
-									
-										UI刷新机制
-									
-									
-									
-									
-								</a>
-						</div>
-				
-			
-	  </article>
-	
+  <article class="article post white-box reveal md shadow article-type-post" id="post" itemscope itemprop="blogPost">
+  
+
+
+  
+  <div class="article-meta" id="top">
+    
+    
+    
+      <h1 class="title">
+        Activity显示流程
+      </h1>
+      <div class='new-meta-box'>
+        
+          
+            
+<div class='new-meta-item author'>
+  <a class='author' href="/" rel="nofollow">
+    <img no-lazy src="">
+    <p>请设置文章作者</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class='new-meta-item category'>
+    <a class='notlink'>
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <a class="category-link" href="/source/categories/Android/">Android</a>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：May 8, 2021</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class="new-meta-item browse leancloud">
+    <a class='notlink'>
+      
+      <div id="lc-pv" data-title="Activity显示流程" data-path="/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/">
+        <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
+        <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+        次浏览
+      </div>
+    </a>
+  </div>
+
+
+          
+        
+      </div>
+    
+  </div>
+
+
+  
+  
+  <h1 id="Activity显示流程"><a href="#Activity显示流程" class="headerlink" title="Activity显示流程"></a>Activity显示流程</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">override fun <span class="title">onCreate</span><span class="params">(savedInstanceState: Bundle?)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">    setContentView(R.layout.activity_main)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码是我们新建项目适合默认创建的，我们来看一下<code>setContentView()</code>究竟做了什么能让页面显示出来，点进去看一眼</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Set the activity content from a layout resource.  The resource will be</span></span><br><span class="line"><span class="comment"> * inflated, adding all top-level views to the activity.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> layoutResID Resource ID to be inflated.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #setContentView(android.view.View)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #setContentView(android.view.View, android.view.ViewGroup.LayoutParams)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(<span class="meta">@LayoutRes</span> <span class="keyword">int</span> layoutResID)</span> </span>&#123;</span><br><span class="line">    getWindow().setContentView(layoutResID);</span><br><span class="line">    initWindowDecorActionBar();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，调用了了<code>getWindow()</code>的<code>setContentView()</code>方法，那我们看一下<code>getWindow()</code>拿到的是什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Retrieve the current &#123;<span class="doctag">@link</span> android.view.Window&#125; for the activity.</span></span><br><span class="line"><span class="comment"> * This can be used to directly access parts of the Window API that</span></span><br><span class="line"><span class="comment"> * are not available through Activity/Screen.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> Window The current window, or null if the activity is not</span></span><br><span class="line"><span class="comment"> *         visual.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Window <span class="title">getWindow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mWindow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>getDelegate()</code>返回的是<code>mWindow</code>，我们看一下<code>mWindow</code>是什么类型以及在哪初始化的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Window mWindow;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">attach</span><span class="params">(Context context, ActivityThread aThread,</span></span></span><br><span class="line"><span class="params"><span class="function">        Instrumentation instr, IBinder token, <span class="keyword">int</span> ident,</span></span></span><br><span class="line"><span class="params"><span class="function">        Application application, Intent intent, ActivityInfo info,</span></span></span><br><span class="line"><span class="params"><span class="function">        CharSequence title, Activity parent, String id,</span></span></span><br><span class="line"><span class="params"><span class="function">        NonConfigurationInstances lastNonConfigurationInstances,</span></span></span><br><span class="line"><span class="params"><span class="function">        Configuration config, String referrer, IVoiceInteractor voiceInteractor,</span></span></span><br><span class="line"><span class="params"><span class="function">        Window window, ActivityConfigCallback activityConfigCallback)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">  	...</span><br><span class="line">    mWindow = <span class="keyword">new</span> PhoneWindow(<span class="keyword">this</span>, window, activityConfigCallback);</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">  	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>mWindow</code>实际上是<code>PhoneWindow</code>，那就来看看<code>PhoneWindow</code>的<code>setContentView()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(<span class="keyword">int</span> layoutResID)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Note: FEATURE_CONTENT_TRANSITIONS may be set in the process of installing the window</span></span><br><span class="line">    <span class="comment">// decor, when theme attributes and the like are crystalized. Do not check the feature</span></span><br><span class="line">    <span class="comment">// before this happens.</span></span><br><span class="line">  	<span class="comment">//注释1</span></span><br><span class="line">    <span class="keyword">if</span> (mContentParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">        installDecor();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</span><br><span class="line">        mContentParent.removeAllViews();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</span><br><span class="line">        <span class="keyword">final</span> Scene newScene = Scene.getSceneForLayout(mContentParent, layoutResID,</span><br><span class="line">                getContext());</span><br><span class="line">        transitionTo(newScene);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mLayoutInflater.inflate(layoutResID, mContentParent);</span><br><span class="line">    &#125;</span><br><span class="line">    mContentParent.requestApplyInsets();</span><br><span class="line">    <span class="keyword">final</span> Callback cb = getCallback();</span><br><span class="line">    <span class="keyword">if</span> (cb != <span class="keyword">null</span> &amp;&amp; !isDestroyed()) &#123;</span><br><span class="line">        cb.onContentChanged();</span><br><span class="line">    &#125;</span><br><span class="line">    mContentParentExplicitlySet = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们先来看<code>注释1</code>的地方，此处判断了<code>mContentParent</code>是否存在，如果不存在则调用<code>installDecor()</code>方法，找一下<code>mContentParent</code>赋值的地方发现只有一处，就是<code>installDecor()</code>方法，我们点进去看一眼</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">installDecor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mForceDecorInstall = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (mDecor == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mDecor = generateDecor(-<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//省略部分代码</span></span><br><span class="line">        ...</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mDecor.setWindow(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (mContentParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mContentParent = generateLayout(mDecor);</span><br><span class="line">        <span class="comment">//省略部分代码</span></span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到里面的逻辑也很简单，<code>mDecor</code>没有的话就<code>generate</code>一个，<code>mContentParent</code>没有的话也generate<code>一个，先看一下</code>mDecor`的生成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> DecorView <span class="title">generateDecor</span><span class="params">(<span class="keyword">int</span> featureId)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// System process doesn&#x27;t have application context and in that case we need to directly use</span></span><br><span class="line">    <span class="comment">// the context we have. Otherwise we want the application context, so we don&#x27;t cling to the</span></span><br><span class="line">    <span class="comment">// activity.</span></span><br><span class="line">    Context context;</span><br><span class="line">    <span class="keyword">if</span> (mUseDecorContext) &#123;</span><br><span class="line">        Context applicationContext = getContext().getApplicationContext();</span><br><span class="line">        <span class="keyword">if</span> (applicationContext == <span class="keyword">null</span>) &#123;</span><br><span class="line">            context = getContext();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            context = <span class="keyword">new</span> DecorContext(applicationContext, getContext());</span><br><span class="line">            <span class="keyword">if</span> (mTheme != -<span class="number">1</span>) &#123;</span><br><span class="line">                context.setTheme(mTheme);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        context = getContext();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DecorView(context, featureId, <span class="keyword">this</span>, getAttributes());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>逻辑很简单，直接<code>new</code>了一个<code>DecorView</code>返回回来了，我们再看一下<code>mContentParent</code>的生成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+  
+  
+    
+    <div class='footer'>
+      
+      
+      
+        <div class='copyright'>
+          <blockquote>
+            
+              
+                <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+              
+            
+              
+                <p>本文永久链接是：<a href=http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/>http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/</a></p>
+              
+            
+          </blockquote>
+        </div>
+      
+      
+    </div>
+  
+  
+    
+
+
+  <div class='article-meta' id="bottom">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-05-18T17:31:52+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：May 18, 2021</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/source/tags/Android/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Android</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/&title=Activity显示流程 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/&title=Activity显示流程 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/&title=Activity显示流程 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </div>
+
+
+  
+  
+
+  
+    <div class="prev-next">
+      
+      
+        <a class='next' href='/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/'>
+          <p class='title'>UI刷新机制<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'>UI刷新机制
+以下代码分析均基于Android9.0(API28)
+
+我们从ViewRootImpl的requestLayout()方法开始
+123456789public void reque...</p>
+        </a>
+      
+    </div>
+  
+</article>
+
+
+  
+
+  <article class="post white-box reveal shadow" id="comments">
+    <p ct><i class='fas fa-comments'></i> 评论</p>
+    
+    <div id="valine_container" class="valine_thread">
+  <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+</div>
+
+  </article>
+
+
+
+
+
+
 </div>
 <aside class='l_side'>
   
@@ -479,148 +675,28 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     
     
 
-<section class="widget blogger shadow desktop mobile">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img no-lazy src='https://p3-tt.byteimg.com/origin/pgc-image/22c4687483d045ee854af5012f739e68.jpeg'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-        
-        
-          <p><span id="jinrishici-sentence">Serenade's Blog</span></p>
-          <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
-        
-      </div>
-    
-    
-      <div class="social-wrapper">
-        
-          
-            <a href="/atom.xml"
-              class="social fas fa-rss flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="mailto:me@xxx.com"
-              class="social fas fa-envelope flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="https://github.com/volantis-x/"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="/"
-              class="social fas fa-headphones-alt flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-      </div>
-    
-  </div>
-</section>
 
-  
 
-  
-    
-    
-  
-
-  <section class="widget category shadow desktop">
+  <section class="widget toc-wrapper shadow desktop mobile" id="toc-div" >
     
   <header>
     
-      <a href='/blog/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
     <div class='content'>
-      <ul class="entry navigation">
         
-          <li><a class="flat-box"
-            title="/source/categories/Android/" href="/source/categories/Android/"
-            id="sourcecategoriesAndroid"
-            ><div class='name'>Android</div><div class='badge'>(2)</div></a></li>
-        
-      </ul>
     </div>
   </section>
 
-
-  
-
-  
-    
-    
-  
-
-  <section class="widget tagcloud shadow desktop mobile">
-    
-  <header>
-    
-      <a href='/blog/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
-    
-  </header>
-
-
-    <div class='content'>
-      <a href="/source/tags/Android/" style="font-size: 14px; color: #999">Android</a>
-    </div>
-  </section>
-
-
-  
-
-  
-    
-    
-
-<section class="widget qrcode shadow desktop mobile">
-  
-
-  <div class='content article-entry'>
-    
-      <img src='https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/qrcode/github@volantis.png'
-      
-        height='64px'
-      />
-    
-      <img src='https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/qrcode/github@volantis.png'
-      
-        height='64px'
-      />
-    
-  </div>
-</section>
 
   
 
 
 </aside>
+
 
 
 		  
@@ -629,21 +705,21 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 <script>
   window.pdata={}
-  pdata.ispage=false;
-  pdata.postTitle="";
+  pdata.ispage=true;
+  pdata.postTitle="Activity显示流程";
   pdata.commentPath="";
   pdata.commentPlaceholder="";
   // header 这里无论是否开启pjax都需要
   var l_header=document.getElementById("l_header");
   
-  l_header.classList.remove("show");
+  l_header.classList.add("show");
   
   
     // cover
     var cover_wrapper=document.querySelector('.cover-wrapper');
     
-    cover_wrapper.id="half";
-    cover_wrapper.style.display="";
+    cover_wrapper.id="none";
+    cover_wrapper.style.display="none";
     
   
 </script>
