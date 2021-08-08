@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head hexo-theme='https://github.com/volantis-x/hexo-theme-volantis/tree/4.3.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <link rel="preload" href="/css/first.css" as="style">
+  
+
+  <!-- 页面元数据 -->
+  
+  <title>Activity显示流程 - Serenade&#39;s Blog</title>
+  
+    <meta name="keywords" content="Android">
+  
+
+  
+
+  <!-- feed -->
+  
+
+  <!-- import meta -->
+  
+
+  <!-- link -->
+  
+
+  <!-- import link -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/first.css">
+
+  
+
+  
+  <link rel="stylesheet" href="/css/style.css" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link rel="stylesheet" href="/css/style.css"></noscript>
+  
+
+  <script id="loadcss"></script>
+
+  
+<script>
+if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode))
+    document.write(
+	'<style>'+
+		'html{'+
+			'overflow-x: hidden !important;'+
+			'overflow-y: hidden !important;'+
+		'}'+
+		'.kill-ie{'+
+			'text-align:center;'+
+			'height: 100%;'+
+			'margin-top: 15%;'+
+			'margin-bottom: 5500%;'+
+		'}'+
+	'</style>'+
+    '<div class="kill-ie">'+
+        '<h1><b>抱歉，您的浏览器无法访问本站</b></h1>'+
+        '<h3>微软已经于2016年终止了对 Internet Explorer (IE) 10 及更早版本的支持，<br/>'+
+        '继续使用存在极大的安全隐患，请使用当代主流的浏览器进行访问。</h3><br/>'+
+        '<a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-cn/WindowsForBusiness/End-of-IE-support"><strong>了解详情 ></strong></a>'+
+    '</div>');
+</script>
+
+
+<noscript>
+	<style>
+		html{
+			overflow-x: hidden !important;
+			overflow-y: hidden !important;
+		}
+		.kill-noscript{
+			text-align:center;
+			height: 100%;
+			margin-top: 15%;
+			margin-bottom: 5500%;
+		}
+	</style>
+    <div class="kill-noscript">
+        <h1><b>抱歉，您的浏览器无法访问本站</b></h1>
+        <h3>本页面需要浏览器支持（启用）JavaScript</h3><br/>
+        <a target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=启用JavaScript"><strong>了解详情 ></strong></a>
+    </div>
+</noscript>
+
+</head>
+
+  <body>
+    
+
+<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
+  <div class='container'>
+  <div id='wrapper'>
+    <div class='nav-sub'>
+      <p class="title"></p>
+      <ul class='switcher nav-list-h m-phone' id="pjax-header-nav-list">
+        <li><a id="s-comment" class="fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a id="s-toc" class="s-toc fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="title flat-box" target="_self" href='/'>
+          
+            <img no-lazy class='logo' src='https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png'/>
+          
+          
+          
+        </a>
+      
+
+			<div class='menu navigation'>
+				<ul class='nav-list-h m-pc'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  <i class='fas fa-link fa-fw'></i>友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <i class="icon fas fa-search fa-fw"></i>
+          <input type="text" class="input u-search-input" placeholder="Search..." />
+        </form>
+      </div>
+
+			<ul class='switcher nav-list-h m-phone'>
+				
+					<li><a class="s-search fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li>
+          <a class="s-menu fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a>
+          <ul class="menu-phone list-v navigation white-box">
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  <i class='fas fa-link fa-fw'></i>友链
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+            
+          </ul>
+        </li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</header>
+
+    <div id="l_body">
+      <div id="l_cover">
+  
+    
+        <div id="full" class='cover-wrapper post dock' style="display: none;">
+          
+            <div class='cover-bg lazyload placeholder' data-bg="https://p26-tt.byteimg.com/origin/pgc-image/5ae0b0aa2cf445ef93bf779565c6935c.jpeg"></div>
+          
+          <div class='cover-body'>
+  <div class='top'>
+    
+    
+      <p class="title">Serenade's Blog</p>
+    
+    
+  </div>
+  <div class='bottom'>
+    <div class='menu navigation'>
+      <div class='list-h'>
+        
+          
+            <a href="/v4/getting-started/"
+              
+              
+              id="v4getting-started">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f5c3.svg'><p>文档</p>
+            </a>
+          
+            <a href="/faqs/"
+              
+              
+              id="faqs">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f516.svg'><p>帮助</p>
+            </a>
+          
+            <a href="/examples/"
+              
+              
+              id="examples">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f396.svg'><p>示例</p>
+            </a>
+          
+            <a href="/contributors/"
+              
+              
+              id="contributors">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f389.svg'><p>社区</p>
+            </a>
+          
+            <a href="/archives/"
+              
+              
+              id="archives">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f4f0.svg'><p>博客</p>
+            </a>
+          
+            <a target="_blank" rel="noopener" href="https://github.com/volantis-x/hexo-theme-volantis/"
+              
+              
+              id="https:githubcomvolantis-xhexo-theme-volantis">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f9ec.svg'><p>源码</p>
+            </a>
+          
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+          <div id="scroll-down" style="display: none;"><i class="fa fa-chevron-down scroll-down-effects"></i></div>
+        </div>
+    
+  
+  </div>
+
+      <div id="safearea">
+        <div class="body-wrapper" id="pjax-container">
+          
+
+<div class='l_main'>
+  <article class="article post white-box reveal md shadow article-type-post" id="post" itemscope itemprop="blogPost">
+  
+
+
+  
+  <div class="article-meta" id="top">
+    
+    
+    
+      <h1 class="title">
+        Activity显示流程
+      </h1>
+      <div class='new-meta-box'>
+        
+          
+            
+<div class='new-meta-item author'>
+  <a class='author' href="/" rel="nofollow">
+    <img no-lazy src="">
+    <p>请设置文章作者</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class='new-meta-item category'>
+    <a class='notlink'>
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <a class="category-link" href="/source/categories/Android/">Android</a>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：May 8, 2021</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class="new-meta-item browse leancloud">
+    <a class='notlink'>
+      
+      <div id="lc-pv" data-title="Activity显示流程" data-path="/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/">
+        <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
+        <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+        次浏览
+      </div>
+    </a>
+  </div>
+
+
+          
+        
+      </div>
+    
+  </div>
+
+
+  
+  
+  <h1 id="Activity显示流程"><a href="#Activity显示流程" class="headerlink" title="Activity显示流程"></a>Activity显示流程</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">override fun <span class="title">onCreate</span><span class="params">(savedInstanceState: Bundle?)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">    setContentView(R.layout.activity_main)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码是我们新建项目适合默认创建的，我们来看一下<code>setContentView()</code>究竟做了什么能让页面显示出来，点进去看一眼</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Set the activity content from a layout resource.  The resource will be</span></span><br><span class="line"><span class="comment"> * inflated, adding all top-level views to the activity.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> layoutResID Resource ID to be inflated.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #setContentView(android.view.View)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> #setContentView(android.view.View, android.view.ViewGroup.LayoutParams)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(<span class="meta">@LayoutRes</span> <span class="keyword">int</span> layoutResID)</span> </span>&#123;</span><br><span class="line">    getWindow().setContentView(layoutResID);</span><br><span class="line">    initWindowDecorActionBar();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，调用了了<code>getWindow()</code>的<code>setContentView()</code>方法，那我们看一下<code>getWindow()</code>拿到的是什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Retrieve the current &#123;<span class="doctag">@link</span> android.view.Window&#125; for the activity.</span></span><br><span class="line"><span class="comment"> * This can be used to directly access parts of the Window API that</span></span><br><span class="line"><span class="comment"> * are not available through Activity/Screen.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> Window The current window, or null if the activity is not</span></span><br><span class="line"><span class="comment"> *         visual.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Window <span class="title">getWindow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mWindow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>getDelegate()</code>返回的是<code>mWindow</code>，我们看一下<code>mWindow</code>是什么类型以及在哪初始化的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Window mWindow;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">attach</span><span class="params">(Context context, ActivityThread aThread,</span></span></span><br><span class="line"><span class="params"><span class="function">        Instrumentation instr, IBinder token, <span class="keyword">int</span> ident,</span></span></span><br><span class="line"><span class="params"><span class="function">        Application application, Intent intent, ActivityInfo info,</span></span></span><br><span class="line"><span class="params"><span class="function">        CharSequence title, Activity parent, String id,</span></span></span><br><span class="line"><span class="params"><span class="function">        NonConfigurationInstances lastNonConfigurationInstances,</span></span></span><br><span class="line"><span class="params"><span class="function">        Configuration config, String referrer, IVoiceInteractor voiceInteractor,</span></span></span><br><span class="line"><span class="params"><span class="function">        Window window, ActivityConfigCallback activityConfigCallback)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">  	...</span><br><span class="line">    mWindow = <span class="keyword">new</span> PhoneWindow(<span class="keyword">this</span>, window, activityConfigCallback);</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">  	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>mWindow</code>实际上是<code>PhoneWindow</code>，那就来看看<code>PhoneWindow</code>的<code>setContentView()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(<span class="keyword">int</span> layoutResID)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Note: FEATURE_CONTENT_TRANSITIONS may be set in the process of installing the window</span></span><br><span class="line">    <span class="comment">// decor, when theme attributes and the like are crystalized. Do not check the feature</span></span><br><span class="line">    <span class="comment">// before this happens.</span></span><br><span class="line">  	<span class="comment">//注释1</span></span><br><span class="line">    <span class="keyword">if</span> (mContentParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">        installDecor();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</span><br><span class="line">        mContentParent.removeAllViews();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</span><br><span class="line">        <span class="keyword">final</span> Scene newScene = Scene.getSceneForLayout(mContentParent, layoutResID,</span><br><span class="line">                getContext());</span><br><span class="line">        transitionTo(newScene);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mLayoutInflater.inflate(layoutResID, mContentParent);</span><br><span class="line">    &#125;</span><br><span class="line">    mContentParent.requestApplyInsets();</span><br><span class="line">    <span class="keyword">final</span> Callback cb = getCallback();</span><br><span class="line">    <span class="keyword">if</span> (cb != <span class="keyword">null</span> &amp;&amp; !isDestroyed()) &#123;</span><br><span class="line">        cb.onContentChanged();</span><br><span class="line">    &#125;</span><br><span class="line">    mContentParentExplicitlySet = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们先来看<code>注释1</code>的地方，此处判断了<code>mContentParent</code>是否存在，如果不存在则调用<code>installDecor()</code>方法，找一下<code>mContentParent</code>赋值的地方发现只有一处，就是<code>installDecor()</code>方法，我们点进去看一眼</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">installDecor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mForceDecorInstall = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (mDecor == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mDecor = generateDecor(-<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//省略部分代码</span></span><br><span class="line">        ...</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mDecor.setWindow(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (mContentParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mContentParent = generateLayout(mDecor);</span><br><span class="line">        <span class="comment">//省略部分代码</span></span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到里面的逻辑也很简单，<code>mDecor</code>没有的话就<code>generate</code>一个，<code>mContentParent</code>没有的话也<code>generate</code>一个，先看一下<code>mDecor</code>的生成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> DecorView <span class="title">generateDecor</span><span class="params">(<span class="keyword">int</span> featureId)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// System process doesn&#x27;t have application context and in that case we need to directly use</span></span><br><span class="line">    <span class="comment">// the context we have. Otherwise we want the application context, so we don&#x27;t cling to the</span></span><br><span class="line">    <span class="comment">// activity.</span></span><br><span class="line">    Context context;</span><br><span class="line">    <span class="keyword">if</span> (mUseDecorContext) &#123;</span><br><span class="line">        Context applicationContext = getContext().getApplicationContext();</span><br><span class="line">        <span class="keyword">if</span> (applicationContext == <span class="keyword">null</span>) &#123;</span><br><span class="line">            context = getContext();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            context = <span class="keyword">new</span> DecorContext(applicationContext, getContext());</span><br><span class="line">            <span class="keyword">if</span> (mTheme != -<span class="number">1</span>) &#123;</span><br><span class="line">                context.setTheme(mTheme);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        context = getContext();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DecorView(context, featureId, <span class="keyword">this</span>, getAttributes());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>逻辑很简单，直接<code>new</code>了一个<code>DecorView</code>返回回来了，我们再看一下<code>mContentParent</code>的生成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> ViewGroup <span class="title">generateLayout</span><span class="params">(DecorView decor)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">    <span class="keyword">int</span> layoutResource;</span><br><span class="line">    <span class="keyword">int</span> features = getLocalFeatures();</span><br><span class="line">    <span class="keyword">if</span> ((features &amp; ((<span class="number">1</span> &lt;&lt; FEATURE_LEFT_ICON) | (<span class="number">1</span> &lt;&lt; FEATURE_RIGHT_ICON))) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsFloating) &#123;</span><br><span class="line">            layoutResource = res.resourceId;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            layoutResource = R.layout.screen_title_icons;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; ((<span class="number">1</span> &lt;&lt; FEATURE_PROGRESS) | (<span class="number">1</span> &lt;&lt; FEATURE_INDETERMINATE_PROGRESS))) != <span class="number">0</span></span><br><span class="line">            &amp;&amp; (features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_ACTION_BAR)) == <span class="number">0</span>) &#123;</span><br><span class="line">        layoutResource = R.layout.screen_progress;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_CUSTOM_TITLE)) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsFloating) &#123;</span><br><span class="line">            layoutResource = res.resourceId;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            layoutResource = R.layout.screen_custom_title;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_NO_TITLE)) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsFloating) &#123;</span><br><span class="line">            layoutResource = res.resourceId;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_ACTION_BAR)) != <span class="number">0</span>) &#123;</span><br><span class="line">            layoutResource = a.getResourceId(</span><br><span class="line">                    R.styleable.Window_windowActionBarFullscreenDecorLayout,</span><br><span class="line">                    R.layout.screen_action_bar);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            layoutResource = R.layout.screen_title;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_ACTION_MODE_OVERLAY)) != <span class="number">0</span>) &#123;</span><br><span class="line">        layoutResource = R.layout.screen_simple_overlay_action_mode;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        layoutResource = R.layout.screen_simple;</span><br><span class="line">    &#125;</span><br><span class="line">		mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);</span><br><span class="line">  </span><br><span class="line">    ViewGroup contentParent = (ViewGroup)findViewById(ID_ANDROID_CONTENT);</span><br><span class="line">    <span class="keyword">if</span> (contentParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;Window couldn&#x27;t find content container view&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">    <span class="keyword">return</span> contentParent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>mContentParent</code>即为<code>contentParent</code>，是直接通过<code>findViewById</code>查找id为<code>ID_ANDROID_CONTENT(com.android.internal.R.id.content)</code>查找出来的，诶？<code>window</code>也有<code>findViewById</code>方法吗，看一眼咋写的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Finds a view that was identified by the &#123;<span class="doctag">@code</span> android:id&#125; XML attribute</span></span><br><span class="line"><span class="comment"> * that was processed in &#123;<span class="doctag">@link</span> android.app.Activity#onCreate&#125;.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * This will implicitly call &#123;<span class="doctag">@link</span> #getDecorView&#125; with all of the associated side-effects.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * &lt;strong&gt;Note:&lt;/strong&gt; In most cases -- depending on compiler support --</span></span><br><span class="line"><span class="comment"> * the resulting view is automatically cast to the target class type. If</span></span><br><span class="line"><span class="comment"> * the target class type is unconstrained, an explicit cast may be</span></span><br><span class="line"><span class="comment"> * necessary.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> id the ID to search for</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> a view with given ID if found, or &#123;<span class="doctag">@code</span> null&#125; otherwise</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> View#findViewById(int)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> Window#requireViewById(int)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="keyword">public</span> &lt;T extends View&gt; <span class="function">T <span class="title">findViewById</span><span class="params">(<span class="meta">@IdRes</span> <span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> getDecorView().findViewById(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到直接调用的<code>DecorView</code>的<code>findViewById</code>，这里我们回到<code>PhoneWindow</code>的<code>getDecorView</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="meta">@NonNull</span> <span class="function">View <span class="title">getDecorView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mDecor == <span class="keyword">null</span> || mForceDecorInstall) &#123;</span><br><span class="line">        installDecor();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> mDecor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实不用看也可以猜出，返回的就是我们刚刚看到的那个<code>mDecor</code>，等等，好像哪里有点不对，<code>mDecor</code>不是刚刚<code>new</code>出来的吗？，难道它里面默认添加了子布局？我们快速回去看一眼</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">DecorView(Context context, <span class="keyword">int</span> featureId, PhoneWindow window,</span><br><span class="line">        WindowManager.LayoutParams params) &#123;</span><br><span class="line">    <span class="keyword">super</span>(context);</span><br><span class="line">    mFeatureId = featureId;</span><br><span class="line"></span><br><span class="line">    mShowInterpolator = AnimationUtils.loadInterpolator(context,</span><br><span class="line">            android.R.interpolator.linear_out_slow_in);</span><br><span class="line">    mHideInterpolator = AnimationUtils.loadInterpolator(context,</span><br><span class="line">            android.R.interpolator.fast_out_linear_in);</span><br><span class="line"></span><br><span class="line">    mBarEnterExitDuration = context.getResources().getInteger(</span><br><span class="line">            R.integer.dock_enter_exit_duration);</span><br><span class="line">    mForceWindowDrawsBarBackgrounds = context.getResources().getBoolean(</span><br><span class="line">            R.bool.config_forceWindowDrawsStatusBarBackground)</span><br><span class="line">            &amp;&amp; context.getApplicationInfo().targetSdkVersion &gt;= N;</span><br><span class="line">    mSemiTransparentBarColor = context.getResources().getColor(</span><br><span class="line">            R.color.system_bar_background_semi_transparent, <span class="keyword">null</span> <span class="comment">/* theme */</span>);</span><br><span class="line"></span><br><span class="line">    updateAvailableWidth();</span><br><span class="line"></span><br><span class="line">    setWindow(window);</span><br><span class="line"></span><br><span class="line">    updateLogTag(params);</span><br><span class="line"></span><br><span class="line">    mResizeShadowSize = context.getResources().getDimensionPixelSize(</span><br><span class="line">            R.dimen.resize_shadow_size);</span><br><span class="line">    initResizingPaints();</span><br><span class="line"></span><br><span class="line">    mLegacyNavigationBarBackgroundPaint.setColor(Color.BLACK);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面也没有添加子布局的代码啊？那一定是后<code>add</code>进去的，还记得刚刚<code>findViewById</code>之前有个方法叫<code>onResourcesLoaded</code>吗？进去看一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">onResourcesLoaded</span><span class="params">(LayoutInflater inflater, <span class="keyword">int</span> layoutResource)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mBackdropFrameRenderer != <span class="keyword">null</span>) &#123;</span><br><span class="line">        loadBackgroundDrawablesIfNeeded();</span><br><span class="line">        mBackdropFrameRenderer.onResourcesLoaded(</span><br><span class="line">                <span class="keyword">this</span>, mResizingBackgroundDrawable, mCaptionBackgroundDrawable,</span><br><span class="line">                mUserCaptionBackgroundDrawable, getCurrentColor(mStatusColorViewState),</span><br><span class="line">                getCurrentColor(mNavigationColorViewState));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mDecorCaptionView = createDecorCaptionView(inflater);</span><br><span class="line">    <span class="keyword">final</span> View root = inflater.inflate(layoutResource, <span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">if</span> (mDecorCaptionView != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mDecorCaptionView.getParent() == <span class="keyword">null</span>) &#123;</span><br><span class="line">            addView(mDecorCaptionView,</span><br><span class="line">                    <span class="keyword">new</span> ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));</span><br><span class="line">        &#125;</span><br><span class="line">        mDecorCaptionView.addView(root,</span><br><span class="line">                <span class="keyword">new</span> ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Put it below the color views.</span></span><br><span class="line">        addView(root, <span class="number">0</span>, <span class="keyword">new</span> ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));</span><br><span class="line">    &#125;</span><br><span class="line">    mContentRoot = (ViewGroup) root;</span><br><span class="line">    initializeElevation();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>果然是在这里<code>addView</code>的，那么这个根据<code>layoutResource</code>inflate出来的<code>root</code>里一定是有刚刚的id，我们看下这个<code>layoutResource</code>传进来的值是多少，回到刚刚的<code>generateLayout</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> ViewGroup <span class="title">generateLayout</span><span class="params">(DecorView decor)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">    <span class="keyword">int</span> layoutResource;</span><br><span class="line">    <span class="keyword">int</span> features = getLocalFeatures();</span><br><span class="line">    <span class="keyword">if</span> ((features &amp; ((<span class="number">1</span> &lt;&lt; FEATURE_LEFT_ICON) | (<span class="number">1</span> &lt;&lt; FEATURE_RIGHT_ICON))) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsFloating) &#123;</span><br><span class="line">            layoutResource = res.resourceId;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            layoutResource = R.layout.screen_title_icons;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; ((<span class="number">1</span> &lt;&lt; FEATURE_PROGRESS) | (<span class="number">1</span> &lt;&lt; FEATURE_INDETERMINATE_PROGRESS))) != <span class="number">0</span></span><br><span class="line">            &amp;&amp; (features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_ACTION_BAR)) == <span class="number">0</span>) &#123;</span><br><span class="line">        layoutResource = R.layout.screen_progress;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_CUSTOM_TITLE)) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsFloating) &#123;</span><br><span class="line">            layoutResource = res.resourceId;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            layoutResource = R.layout.screen_custom_title;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_NO_TITLE)) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mIsFloating) &#123;</span><br><span class="line">            layoutResource = res.resourceId;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_ACTION_BAR)) != <span class="number">0</span>) &#123;</span><br><span class="line">            layoutResource = a.getResourceId(</span><br><span class="line">                    R.styleable.Window_windowActionBarFullscreenDecorLayout,</span><br><span class="line">                    R.layout.screen_action_bar);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            layoutResource = R.layout.screen_title;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((features &amp; (<span class="number">1</span> &lt;&lt; FEATURE_ACTION_MODE_OVERLAY)) != <span class="number">0</span>) &#123;</span><br><span class="line">        layoutResource = R.layout.screen_simple_overlay_action_mode;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        layoutResource = R.layout.screen_simple;</span><br><span class="line">    &#125;</span><br><span class="line">		mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);</span><br><span class="line">  </span><br><span class="line">    ViewGroup contentParent = (ViewGroup)findViewById(ID_ANDROID_CONTENT);</span><br><span class="line">    <span class="keyword">if</span> (contentParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;Window couldn&#x27;t find content container view&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//省略部分代码</span></span><br><span class="line">    <span class="keyword">return</span> contentParent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>layoutResource</code>是根据一堆条件判断出来的，我们随便取其中的<code>R.layout.screen_simple</code>看下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fitsSystemWindows</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;vertical&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ViewStub</span> <span class="attr">android:id</span>=<span class="string">&quot;@+id/action_mode_bar_stub&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:inflatedId</span>=<span class="string">&quot;@+id/action_mode_bar&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:layout</span>=<span class="string">&quot;@layout/action_mode_bar&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:theme</span>=<span class="string">&quot;?attr/actionBarTheme&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">FrameLayout</span></span></span><br><span class="line"><span class="tag">         <span class="attr">android:id</span>=<span class="string">&quot;@android:id/content&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">android:foregroundInsidePadding</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">android:foregroundGravity</span>=<span class="string">&quot;fill_horizontal|top&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">android:foreground</span>=<span class="string">&quot;?android:attr/windowContentOverlay&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到确实是存在id为<code>content</code>的子布局，到这里我们就把<code>installDecor()</code>的整个流程分析完了，我们回到<code>setContentView</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(<span class="keyword">int</span> layoutResID)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Note: FEATURE_CONTENT_TRANSITIONS may be set in the process of installing the window</span></span><br><span class="line">    <span class="comment">// decor, when theme attributes and the like are crystalized. Do not check the feature</span></span><br><span class="line">    <span class="comment">// before this happens.</span></span><br><span class="line">    <span class="keyword">if</span> (mContentParent == <span class="keyword">null</span>) &#123;</span><br><span class="line">        installDecor();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</span><br><span class="line">        mContentParent.removeAllViews();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</span><br><span class="line">        <span class="keyword">final</span> Scene newScene = Scene.getSceneForLayout(mContentParent, layoutResID,</span><br><span class="line">                getContext());</span><br><span class="line">        transitionTo(newScene);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mLayoutInflater.inflate(layoutResID, mContentParent);</span><br><span class="line">    &#125;</span><br><span class="line">    mContentParent.requestApplyInsets();</span><br><span class="line">    <span class="keyword">final</span> Callback cb = getCallback();</span><br><span class="line">    <span class="keyword">if</span> (cb != <span class="keyword">null</span> &amp;&amp; !isDestroyed()) &#123;</span><br><span class="line">        cb.onContentChanged();</span><br><span class="line">    &#125;</span><br><span class="line">    mContentParentExplicitlySet = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到判断了是否有<code>FEATURE_CONTENT_TRANSITIONS</code>这个Feature，这个是跟动画相关的，我们直接看<code>else</code>，<code>else</code>里的操作很简单，就是调用了<code>mLayoutInflater</code>把<code>layoutResID</code>布局加载到我们刚刚初始化的<code>mContentParent</code>里去，我们看一下他到底是怎么加载的布局</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Inflate a new view hierarchy from the specified xml resource. Throws</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> InflateException&#125; if there is an error.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> resource ID for an XML layout resource to load (e.g.,</span></span><br><span class="line"><span class="comment"> *        &lt;code&gt;R.layout.main_page&lt;/code&gt;)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> root Optional view to be the parent of the generated hierarchy (if</span></span><br><span class="line"><span class="comment"> *        &lt;em&gt;attachToRoot&lt;/em&gt; is true), or else simply an object that</span></span><br><span class="line"><span class="comment"> *        provides a set of LayoutParams values for root of the returned</span></span><br><span class="line"><span class="comment"> *        hierarchy (if &lt;em&gt;attachToRoot&lt;/em&gt; is false.)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> attachToRoot Whether the inflated hierarchy should be attached to</span></span><br><span class="line"><span class="comment"> *        the root parameter? If false, root is only used to create the</span></span><br><span class="line"><span class="comment"> *        correct subclass of LayoutParams for the root view in the XML.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> The root View of the inflated hierarchy. If root was supplied and</span></span><br><span class="line"><span class="comment"> *         attachToRoot is true, this is root; otherwise it is the root of</span></span><br><span class="line"><span class="comment"> *         the inflated XML file.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(<span class="meta">@LayoutRes</span> <span class="keyword">int</span> resource, <span class="meta">@Nullable</span> ViewGroup root, <span class="keyword">boolean</span> attachToRoot)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Resources res = getContext().getResources();</span><br><span class="line">    <span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;INFLATING from resource: \&quot;&quot;</span> + res.getResourceName(resource) + <span class="string">&quot;\&quot; (&quot;</span></span><br><span class="line">                + Integer.toHexString(resource) + <span class="string">&quot;)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    View view = tryInflatePrecompiled(resource, res, root, attachToRoot);</span><br><span class="line">    <span class="keyword">if</span> (view != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125;</span><br><span class="line">    XmlResourceParser parser = res.getLayout(resource);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> inflate(parser, root, attachToRoot);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        parser.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>点进去发现<code>inflate</code>有好多重载方法，最终调用的是上面这个方法，可以看到这里有一步优化，<code>tryInflatePrecompiled</code>这个方法顾名思义，尝试实例化已经预编译的，我们先不管这个预编译，直接看没有预编译的情况，这里获取了<code>XmlResourceParser</code>传入到了<code>inflate</code>方法，并且把<code>inflate</code>的结果返回回去了，那么这个<code>inflate</code>应该就是进行我们布局xml解析的地方了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Inflate a new view hierarchy from the specified XML node. Throws</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> InflateException&#125; if there is an error.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * &lt;em&gt;&lt;strong&gt;Important&lt;/strong&gt;&lt;/em&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;For performance</span></span><br><span class="line"><span class="comment"> * reasons, view inflation relies heavily on pre-processing of XML files</span></span><br><span class="line"><span class="comment"> * that is done at build time. Therefore, it is not currently possible to</span></span><br><span class="line"><span class="comment"> * use LayoutInflater with an XmlPullParser over a plain XML file at runtime.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parser XML dom node containing the description of the view</span></span><br><span class="line"><span class="comment"> *        hierarchy.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> root Optional view to be the parent of the generated hierarchy (if</span></span><br><span class="line"><span class="comment"> *        &lt;em&gt;attachToRoot&lt;/em&gt; is true), or else simply an object that</span></span><br><span class="line"><span class="comment"> *        provides a set of LayoutParams values for root of the returned</span></span><br><span class="line"><span class="comment"> *        hierarchy (if &lt;em&gt;attachToRoot&lt;/em&gt; is false.)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> attachToRoot Whether the inflated hierarchy should be attached to</span></span><br><span class="line"><span class="comment"> *        the root parameter? If false, root is only used to create the</span></span><br><span class="line"><span class="comment"> *        correct subclass of LayoutParams for the root view in the XML.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> The root View of the inflated hierarchy. If root was supplied and</span></span><br><span class="line"><span class="comment"> *         attachToRoot is true, this is root; otherwise it is the root of</span></span><br><span class="line"><span class="comment"> *         the inflated XML file.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(XmlPullParser parser, <span class="meta">@Nullable</span> ViewGroup root, <span class="keyword">boolean</span> attachToRoot)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (mConstructorArgs) &#123;</span><br><span class="line">        Trace.traceBegin(Trace.TRACE_TAG_VIEW, <span class="string">&quot;inflate&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> Context inflaterContext = mContext;</span><br><span class="line">        <span class="keyword">final</span> AttributeSet attrs = Xml.asAttributeSet(parser);</span><br><span class="line">        Context lastContext = (Context) mConstructorArgs[<span class="number">0</span>];</span><br><span class="line">        mConstructorArgs[<span class="number">0</span>] = inflaterContext;</span><br><span class="line">        View result = root;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            advanceToRootNode(parser);</span><br><span class="line">            <span class="keyword">final</span> String name = parser.getName();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;**************************&quot;</span>);</span><br><span class="line">                System.out.println(<span class="string">&quot;Creating root view: &quot;</span></span><br><span class="line">                        + name);</span><br><span class="line">                System.out.println(<span class="string">&quot;**************************&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (TAG_MERGE.equals(name)) &#123;</span><br><span class="line">                <span class="keyword">if</span> (root == <span class="keyword">null</span> || !attachToRoot) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> InflateException(<span class="string">&quot;&lt;merge /&gt; can be used only with a valid &quot;</span></span><br><span class="line">                            + <span class="string">&quot;ViewGroup root and attachToRoot=true&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                rInflate(parser, root, inflaterContext, attrs, <span class="keyword">false</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// Temp is the root view that was found in the xml</span></span><br><span class="line">                <span class="keyword">final</span> View temp = createViewFromTag(root, name, inflaterContext, attrs);</span><br><span class="line"></span><br><span class="line">                ViewGroup.LayoutParams params = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (root != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">                        System.out.println(<span class="string">&quot;Creating params from root: &quot;</span> +</span><br><span class="line">                                root);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// Create layout params that match root, if supplied</span></span><br><span class="line">                    params = root.generateLayoutParams(attrs);</span><br><span class="line">                    <span class="keyword">if</span> (!attachToRoot) &#123;</span><br><span class="line">                        <span class="comment">// Set the layout params for temp if we are not</span></span><br><span class="line">                        <span class="comment">// attaching. (If we are, we use addView, below)</span></span><br><span class="line">                        temp.setLayoutParams(params);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;-----&gt; start inflating children&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Inflate all children under temp against its context.</span></span><br><span class="line">                rInflateChildren(parser, temp, attrs, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (DEBUG) &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;-----&gt; done inflating children&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// We are supposed to attach all the views we found (int temp)</span></span><br><span class="line">                <span class="comment">// to root. Do that now.</span></span><br><span class="line">                <span class="keyword">if</span> (root != <span class="keyword">null</span> &amp;&amp; attachToRoot) &#123;</span><br><span class="line">                    root.addView(temp, params);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Decide whether to return the root that was passed in or the</span></span><br><span class="line">                <span class="comment">// top view found in xml.</span></span><br><span class="line">                <span class="keyword">if</span> (root == <span class="keyword">null</span> || !attachToRoot) &#123;</span><br><span class="line">                    result = temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (XmlPullParserException e) &#123;</span><br><span class="line">            <span class="keyword">final</span> InflateException ie = <span class="keyword">new</span> InflateException(e.getMessage(), e);</span><br><span class="line">            ie.setStackTrace(EMPTY_STACK_TRACE);</span><br><span class="line">            <span class="keyword">throw</span> ie;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">final</span> InflateException ie = <span class="keyword">new</span> InflateException(</span><br><span class="line">                    getParserStateDescription(inflaterContext, attrs)</span><br><span class="line">                    + <span class="string">&quot;: &quot;</span> + e.getMessage(), e);</span><br><span class="line">            ie.setStackTrace(EMPTY_STACK_TRACE);</span><br><span class="line">            <span class="keyword">throw</span> ie;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">// Don&#x27;t retain static reference on context.</span></span><br><span class="line">            mConstructorArgs[<span class="number">0</span>] = lastContext;</span><br><span class="line">            mConstructorArgs[<span class="number">1</span>] = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">            Trace.traceEnd(Trace.TRACE_TAG_VIEW);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里有一个判断，如果标签名是<code>merge</code>的话走的是<code>rInflate</code>方法，其他情况走<code>rInflateChildren</code>方法，我们先不管<code>merge</code>标签的情况，直接看<code>rInflateChildren</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Recursive method used to inflate internal (non-root) children. This</span></span><br><span class="line"><span class="comment"> * method calls through to &#123;<span class="doctag">@link</span> #rInflate&#125; using the parent context as</span></span><br><span class="line"><span class="comment"> * the inflation context.</span></span><br><span class="line"><span class="comment"> * &lt;strong&gt;Note:&lt;/strong&gt; Default visibility so the BridgeInflater can</span></span><br><span class="line"><span class="comment"> * call it.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">rInflateChildren</span><span class="params">(XmlPullParser parser, View parent, AttributeSet attrs,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">boolean</span> finishInflate)</span> <span class="keyword">throws</span> XmlPullParserException, IOException </span>&#123;</span><br><span class="line">    rInflate(parser, parent, parent.getContext(), attrs, finishInflate);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>rInflateChildren</code>调用的也是<code>rInflate</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Recursive method used to descend down the xml hierarchy and instantiate</span></span><br><span class="line"><span class="comment"> * views, instantiate their children, and then call onFinishInflate().</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * &lt;strong&gt;Note:&lt;/strong&gt; Default visibility so the BridgeInflater can</span></span><br><span class="line"><span class="comment"> * override it.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rInflate</span><span class="params">(XmlPullParser parser, View parent, Context context,</span></span></span><br><span class="line"><span class="params"><span class="function">        AttributeSet attrs, <span class="keyword">boolean</span> finishInflate)</span> <span class="keyword">throws</span> XmlPullParserException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> depth = parser.getDepth();</span><br><span class="line">    <span class="keyword">int</span> type;</span><br><span class="line">    <span class="keyword">boolean</span> pendingRequestFocus = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (((type = parser.next()) != XmlPullParser.END_TAG ||</span><br><span class="line">            parser.getDepth() &gt; depth) &amp;&amp; type != XmlPullParser.END_DOCUMENT) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (type != XmlPullParser.START_TAG) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> String name = parser.getName();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (TAG_REQUEST_FOCUS.equals(name)) &#123;</span><br><span class="line">            pendingRequestFocus = <span class="keyword">true</span>;</span><br><span class="line">            consumeChildElements(parser);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (TAG_TAG.equals(name)) &#123;</span><br><span class="line">            parseViewTag(parser, parent, attrs);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (TAG_INCLUDE.equals(name)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (parser.getDepth() == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InflateException(<span class="string">&quot;&lt;include /&gt; cannot be the root element&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            parseInclude(parser, context, parent, attrs);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (TAG_MERGE.equals(name)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InflateException(<span class="string">&quot;&lt;merge /&gt; must be the root element&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> View view = createViewFromTag(parent, name, context, attrs);</span><br><span class="line">            <span class="keyword">final</span> ViewGroup viewGroup = (ViewGroup) parent;</span><br><span class="line">            <span class="keyword">final</span> ViewGroup.LayoutParams params = viewGroup.generateLayoutParams(attrs);</span><br><span class="line">            rInflateChildren(parser, view, attrs, <span class="keyword">true</span>);</span><br><span class="line">            viewGroup.addView(view, params);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pendingRequestFocus) &#123;</span><br><span class="line">        parent.restoreDefaultFocus();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (finishInflate) &#123;</span><br><span class="line">        parent.onFinishInflate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这个<code>while</code>循环就是我们要找的东西了，在里面判断了各种标签<code>requestFocus</code>、<code>tag</code>、<code>include</code>、<code>merge</code>，最后的<code>else</code>才是真正解析<code>TextView</code>等控件的地方</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Convenience method for calling through to the five-arg createViewFromTag</span></span><br><span class="line"><span class="comment"> * method. This method passes &#123;<span class="doctag">@code</span> false&#125; for the &#123;<span class="doctag">@code</span> ignoreThemeAttr&#125;</span></span><br><span class="line"><span class="comment"> * argument and should be used for everything except &#123;<span class="doctag">@code</span> &amp;gt;include&gt;&#125;</span></span><br><span class="line"><span class="comment"> * tag parsing.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@UnsupportedAppUsage</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> View <span class="title">createViewFromTag</span><span class="params">(View parent, String name, Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> createViewFromTag(parent, name, context, attrs, <span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates a view from a tag name using the supplied attribute set.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * &lt;strong&gt;Note:&lt;/strong&gt; Default visibility so the BridgeInflater can</span></span><br><span class="line"><span class="comment"> * override it.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parent the parent view, used to inflate layout params</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> name the name of the XML tag used to define the view</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> context the inflation context for the view, typically the</span></span><br><span class="line"><span class="comment"> *                &#123;<span class="doctag">@code</span> parent&#125; or base layout inflater context</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> attrs the attribute set for the XML tag used to define the view</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> ignoreThemeAttr &#123;<span class="doctag">@code</span> true&#125; to ignore the &#123;<span class="doctag">@code</span> android:theme&#125;</span></span><br><span class="line"><span class="comment"> *                        attribute (if set) for the view being inflated,</span></span><br><span class="line"><span class="comment"> *                        &#123;<span class="doctag">@code</span> false&#125; otherwise</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@UnsupportedAppUsage</span></span><br><span class="line"><span class="function">View <span class="title">createViewFromTag</span><span class="params">(View parent, String name, Context context, AttributeSet attrs,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">boolean</span> ignoreThemeAttr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (name.equals(<span class="string">&quot;view&quot;</span>)) &#123;</span><br><span class="line">        name = attrs.getAttributeValue(<span class="keyword">null</span>, <span class="string">&quot;class&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Apply a theme wrapper, if allowed and one is specified.</span></span><br><span class="line">    <span class="keyword">if</span> (!ignoreThemeAttr) &#123;</span><br><span class="line">        <span class="keyword">final</span> TypedArray ta = context.obtainStyledAttributes(attrs, ATTRS_THEME);</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> themeResId = ta.getResourceId(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (themeResId != <span class="number">0</span>) &#123;</span><br><span class="line">            context = <span class="keyword">new</span> ContextThemeWrapper(context, themeResId);</span><br><span class="line">        &#125;</span><br><span class="line">        ta.recycle();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        View view = tryCreateView(parent, name, context, attrs);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (view == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">final</span> Object lastContext = mConstructorArgs[<span class="number">0</span>];</span><br><span class="line">            mConstructorArgs[<span class="number">0</span>] = context;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (-<span class="number">1</span> == name.indexOf(<span class="string">&#x27;.&#x27;</span>)) &#123;</span><br><span class="line">                    view = onCreateView(context, parent, name, attrs);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    view = createView(context, name, <span class="keyword">null</span>, attrs);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                mConstructorArgs[<span class="number">0</span>] = lastContext;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InflateException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">        <span class="keyword">final</span> InflateException ie = <span class="keyword">new</span> InflateException(</span><br><span class="line">                getParserStateDescription(context, attrs)</span><br><span class="line">                + <span class="string">&quot;: Error inflating class &quot;</span> + name, e);</span><br><span class="line">        ie.setStackTrace(EMPTY_STACK_TRACE);</span><br><span class="line">        <span class="keyword">throw</span> ie;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">final</span> InflateException ie = <span class="keyword">new</span> InflateException(</span><br><span class="line">                getParserStateDescription(context, attrs)</span><br><span class="line">                + <span class="string">&quot;: Error inflating class &quot;</span> + name, e);</span><br><span class="line">        ie.setStackTrace(EMPTY_STACK_TRACE);</span><br><span class="line">        <span class="keyword">throw</span> ie;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意这个地方的开头 有一个解析<code>view</code>标签的地方，注意这个<code>view</code>是小写的，不是我们经常用的那个<code>&lt;View/&gt;</code>，而是<code>&lt;view&gt;</code>，之前没用过，试了下还真可以</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;android.widget.TextView&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintStart_toStartOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;Hello World!&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>用法跟直接用好像差不多，不过我只在xml里预览了一下，没有实际运行来看，不知道这个标签有什么用，我们继续往下看<code>try</code>里面的内容，这里我把代码单独粘贴出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">View view = tryCreateView(parent, name, context, attrs);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (view == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">final</span> Object lastContext = mConstructorArgs[<span class="number">0</span>];</span><br><span class="line">    mConstructorArgs[<span class="number">0</span>] = context;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (-<span class="number">1</span> == name.indexOf(<span class="string">&#x27;.&#x27;</span>)) &#123;</span><br><span class="line">            view = onCreateView(context, parent, name, attrs);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            view = createView(context, name, <span class="keyword">null</span>, attrs);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mConstructorArgs[<span class="number">0</span>] = lastContext;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到先是调用<code>tryCreateView</code>尝试创建<code>View</code>，我们看下这个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Tries to create a view from a tag name using the supplied attribute set.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This method gives the factory provided by &#123;<span class="doctag">@link</span> LayoutInflater#setFactory&#125; and</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> LayoutInflater#setFactory2&#125; a chance to create a view. However, it does not apply all</span></span><br><span class="line"><span class="comment"> * of the general view creation logic, and thus may return &#123;<span class="doctag">@code</span> null&#125; for some tags. This</span></span><br><span class="line"><span class="comment"> * method is used by &#123;<span class="doctag">@link</span> LayoutInflater#inflate&#125; in creating &#123;<span class="doctag">@code</span> View&#125; objects.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@hide</span> for use by precompiled layouts.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parent the parent view, used to inflate layout params</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> name the name of the XML tag used to define the view</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> context the inflation context for the view, typically the</span></span><br><span class="line"><span class="comment"> *                &#123;<span class="doctag">@code</span> parent&#125; or base layout inflater context</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> attrs the attribute set for the XML tag used to define the view</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@UnsupportedAppUsage(trackingBug = 122360734)</span></span><br><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> View <span class="title">tryCreateView</span><span class="params">(<span class="meta">@Nullable</span> View parent, <span class="meta">@NonNull</span> String name,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="meta">@NonNull</span> Context context,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="meta">@NonNull</span> AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (name.equals(TAG_1995)) &#123;</span><br><span class="line">        <span class="comment">// Let&#x27;s party like it&#x27;s 1995!</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BlinkLayout(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    View view;</span><br><span class="line">    <span class="keyword">if</span> (mFactory2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        view = mFactory2.onCreateView(parent, name, context, attrs);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mFactory != <span class="keyword">null</span>) &#123;</span><br><span class="line">        view = mFactory.onCreateView(name, context, attrs);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        view = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (view == <span class="keyword">null</span> &amp;&amp; mPrivateFactory != <span class="keyword">null</span>) &#123;</span><br><span class="line">        view = mPrivateFactory.onCreateView(parent, name, context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> view;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里先是判断了标签名是否是<code>TAG_1995</code>这个常量，下面还有一句注释，感觉这里像一个彩蛋，继续往下看，如果设置了<code>mFactory2</code>的话就用<code>mFactory2</code>创建view，否则如果设置了<code>mFactory</code>的话就用<code>mFactory</code>创建view，两个都没设置的话view为null，再看是否设置了<code>mPrivateFactory</code>，如果<code>mPrivateFactory</code>也没设置的话，会返回null，我们来看下这几个东西到底是什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Factory mFactory;</span><br><span class="line"><span class="keyword">private</span> Factory2 mFactory2;</span><br><span class="line"><span class="keyword">private</span> Factory2 mPrivateFactory;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Attach a custom Factory interface for creating views while using</span></span><br><span class="line"><span class="comment"> * this LayoutInflater.  This must not be null, and can only be set once;</span></span><br><span class="line"><span class="comment"> * after setting, you can not change the factory.  This is</span></span><br><span class="line"><span class="comment"> * called on each element name as the xml is parsed. If the factory returns</span></span><br><span class="line"><span class="comment"> * a View, that is added to the hierarchy. If it returns null, the next</span></span><br><span class="line"><span class="comment"> * factory default &#123;<span class="doctag">@link</span> #onCreateView&#125; method is called.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;If you have an existing</span></span><br><span class="line"><span class="comment"> * LayoutInflater and want to add your own factory to it, use</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> #cloneInContext&#125; to clone the existing instance and then you</span></span><br><span class="line"><span class="comment"> * can use this function (once) on the returned new instance.  This will</span></span><br><span class="line"><span class="comment"> * merge your own factory with whatever factory the original instance is</span></span><br><span class="line"><span class="comment"> * using.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFactory</span><span class="params">(Factory factory)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mFactorySet) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">&quot;A factory has already been set on this LayoutInflater&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (factory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">&quot;Given factory can not be null&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    mFactorySet = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (mFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mFactory = factory;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mFactory = <span class="keyword">new</span> FactoryMerger(factory, <span class="keyword">null</span>, mFactory, mFactory2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Like &#123;<span class="doctag">@link</span> #setFactory&#125;, but allows you to set a &#123;<span class="doctag">@link</span> Factory2&#125;</span></span><br><span class="line"><span class="comment"> * interface.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFactory2</span><span class="params">(Factory2 factory)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mFactorySet) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">&quot;A factory has already been set on this LayoutInflater&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (factory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">&quot;Given factory can not be null&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    mFactorySet = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (mFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mFactory = mFactory2 = factory;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mFactory = mFactory2 = <span class="keyword">new</span> FactoryMerger(factory, factory, mFactory, mFactory2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@UnsupportedAppUsage</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrivateFactory</span><span class="params">(Factory2 factory)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mPrivateFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mPrivateFactory = factory;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mPrivateFactory = <span class="keyword">new</span> FactoryMerger(factory, factory, mPrivateFactory, mPrivateFactory);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据<code>setFactory</code>、<code>setFactory2</code>的注释可以得出，<code>Factory</code>会在系统解析每个View之前调用，有点类似于一个拦截器，众所周知系统解析布局是反射生成View的，而反射是耗时的，我们可以在这里自定义自己的<code>Factory</code>，直接返回<code>new</code>出来的View来节省反射这步的时间，但是要注意，<code>Factory</code>只能设置一次，再次设置会抛出异常，所以采用设置<code>Factory</code>方案的框架只能使用一个，我们接下来看如果<code>Factory</code>没有设置的情况，这里我们还是把代码粘贴出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (-<span class="number">1</span> == name.indexOf(<span class="string">&#x27;.&#x27;</span>)) &#123;</span><br><span class="line">    view = onCreateView(context, parent, name, attrs);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    view = createView(context, name, <span class="keyword">null</span>, attrs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有个判断是标签名里是否含有<code>.</code>，为什么会这么判断呢，我们先看下如果标签名含<code>.</code>的情况</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Low-level function for instantiating a view by name. This attempts to</span></span><br><span class="line"><span class="comment"> * instantiate a view class of the given &lt;var&gt;name&lt;/var&gt; found in this</span></span><br><span class="line"><span class="comment"> * LayoutInflater&#x27;s ClassLoader.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * There are two things that can happen in an error case: either the</span></span><br><span class="line"><span class="comment"> * exception describing the error will be thrown, or a null will be</span></span><br><span class="line"><span class="comment"> * returned. You must deal with both possibilities -- the former will happen</span></span><br><span class="line"><span class="comment"> * the first time createView() is called for a class of a particular name,</span></span><br><span class="line"><span class="comment"> * the latter every time there-after for that class name.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> viewContext The context used as the context parameter of the View constructor</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> name The full name of the class to be instantiated.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> attrs The XML attributes supplied for this instance.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> View The newly instantiated view, or null.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> View <span class="title">createView</span><span class="params">(<span class="meta">@NonNull</span> Context viewContext, <span class="meta">@NonNull</span> String name,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="meta">@Nullable</span> String prefix, <span class="meta">@Nullable</span> AttributeSet attrs)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> ClassNotFoundException, InflateException </span>&#123;</span><br><span class="line">    Objects.requireNonNull(viewContext);</span><br><span class="line">    Objects.requireNonNull(name);</span><br><span class="line">    Constructor&lt;? extends View&gt; constructor = sConstructorMap.get(name);</span><br><span class="line">    <span class="keyword">if</span> (constructor != <span class="keyword">null</span> &amp;&amp; !verifyClassLoader(constructor)) &#123;</span><br><span class="line">        constructor = <span class="keyword">null</span>;</span><br><span class="line">        sConstructorMap.remove(name);</span><br><span class="line">    &#125;</span><br><span class="line">    Class&lt;? extends View&gt; clazz = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Trace.traceBegin(Trace.TRACE_TAG_VIEW, name);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (constructor == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// Class not found in the cache, see if it&#x27;s real, and try to add it</span></span><br><span class="line">            clazz = Class.forName(prefix != <span class="keyword">null</span> ? (prefix + name) : name, <span class="keyword">false</span>,</span><br><span class="line">                    mContext.getClassLoader()).asSubclass(View.class);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (mFilter != <span class="keyword">null</span> &amp;&amp; clazz != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">boolean</span> allowed = mFilter.onLoadClass(clazz);</span><br><span class="line">                <span class="keyword">if</span> (!allowed) &#123;</span><br><span class="line">                    failNotAllowed(name, prefix, viewContext, attrs);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            constructor = clazz.getConstructor(mConstructorSignature);</span><br><span class="line">            constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            sConstructorMap.put(name, constructor);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// If we have a filter, apply it to cached constructor</span></span><br><span class="line">            <span class="keyword">if</span> (mFilter != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">// Have we seen this name before?</span></span><br><span class="line">                Boolean allowedState = mFilterMap.get(name);</span><br><span class="line">                <span class="keyword">if</span> (allowedState == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="comment">// New class -- remember whether it is allowed</span></span><br><span class="line">                    clazz = Class.forName(prefix != <span class="keyword">null</span> ? (prefix + name) : name, <span class="keyword">false</span>,</span><br><span class="line">                            mContext.getClassLoader()).asSubclass(View.class);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">boolean</span> allowed = clazz != <span class="keyword">null</span> &amp;&amp; mFilter.onLoadClass(clazz);</span><br><span class="line">                    mFilterMap.put(name, allowed);</span><br><span class="line">                    <span class="keyword">if</span> (!allowed) &#123;</span><br><span class="line">                        failNotAllowed(name, prefix, viewContext, attrs);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (allowedState.equals(Boolean.FALSE)) &#123;</span><br><span class="line">                    failNotAllowed(name, prefix, viewContext, attrs);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Object lastContext = mConstructorArgs[<span class="number">0</span>];</span><br><span class="line">        mConstructorArgs[<span class="number">0</span>] = viewContext;</span><br><span class="line">        Object[] args = mConstructorArgs;</span><br><span class="line">        args[<span class="number">1</span>] = attrs;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> View view = constructor.newInstance(args);</span><br><span class="line">            <span class="keyword">if</span> (view <span class="keyword">instanceof</span> ViewStub) &#123;</span><br><span class="line">                <span class="comment">// Use the same context when inflating ViewStub later.</span></span><br><span class="line">                <span class="keyword">final</span> ViewStub viewStub = (ViewStub) view;</span><br><span class="line">                viewStub.setLayoutInflater(cloneInContext((Context) args[<span class="number">0</span>]));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> view;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            mConstructorArgs[<span class="number">0</span>] = lastContext;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">        <span class="keyword">final</span> InflateException ie = <span class="keyword">new</span> InflateException(</span><br><span class="line">                getParserStateDescription(viewContext, attrs)</span><br><span class="line">                + <span class="string">&quot;: Error inflating class &quot;</span> + (prefix != <span class="keyword">null</span> ? (prefix + name) : name), e);</span><br><span class="line">        ie.setStackTrace(EMPTY_STACK_TRACE);</span><br><span class="line">        <span class="keyword">throw</span> ie;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (ClassCastException e) &#123;</span><br><span class="line">        <span class="comment">// If loaded class is not a View subclass</span></span><br><span class="line">        <span class="keyword">final</span> InflateException ie = <span class="keyword">new</span> InflateException(</span><br><span class="line">                getParserStateDescription(viewContext, attrs)</span><br><span class="line">                + <span class="string">&quot;: Class is not a View &quot;</span> + (prefix != <span class="keyword">null</span> ? (prefix + name) : name), e);</span><br><span class="line">        ie.setStackTrace(EMPTY_STACK_TRACE);</span><br><span class="line">        <span class="keyword">throw</span> ie;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">        <span class="comment">// If loadClass fails, we should propagate the exception.</span></span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">final</span> InflateException ie = <span class="keyword">new</span> InflateException(</span><br><span class="line">                getParserStateDescription(viewContext, attrs) + <span class="string">&quot;: Error inflating class &quot;</span></span><br><span class="line">                        + (clazz == <span class="keyword">null</span> ? <span class="string">&quot;&lt;unknown&gt;&quot;</span> : clazz.getName()), e);</span><br><span class="line">        ie.setStackTrace(EMPTY_STACK_TRACE);</span><br><span class="line">        <span class="keyword">throw</span> ie;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_VIEW);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里先从<code>sConstructorMap</code>查找了<code>constructor</code>的缓存，没找到的话调用<code>Class.forName</code>找到对应的类，然后获取对应类的<code>constructor</code>并缓存到<code>sConstructorMap</code>里，接下来反射调用构造方法构造出View实例，这样我们就获取到了我们xml中声明的View，接下来我们看下标签名不含<code>.</code>的情况</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Version of &#123;<span class="doctag">@link</span> #onCreateView(View, String, AttributeSet)&#125; that also</span></span><br><span class="line"><span class="comment"> * takes the inflation context.  The default</span></span><br><span class="line"><span class="comment"> * implementation simply calls &#123;<span class="doctag">@link</span> #onCreateView(View, String, AttributeSet)&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> viewContext The Context to be used as a constructor parameter for the View</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parent The future parent of the returned view.  &lt;em&gt;Note that</span></span><br><span class="line"><span class="comment"> * this may be null.&lt;/em&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> name The fully qualified class name of the View to be create.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> attrs An AttributeSet of attributes to apply to the View.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> View The View created.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(<span class="meta">@NonNull</span> Context viewContext, <span class="meta">@Nullable</span> View parent,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="meta">@NonNull</span> String name, <span class="meta">@Nullable</span> AttributeSet attrs)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> onCreateView(parent, name, attrs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Version of &#123;<span class="doctag">@link</span> #onCreateView(String, AttributeSet)&#125; that also</span></span><br><span class="line"><span class="comment"> * takes the future parent of the view being constructed.  The default</span></span><br><span class="line"><span class="comment"> * implementation simply calls &#123;<span class="doctag">@link</span> #onCreateView(String, AttributeSet)&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parent The future parent of the returned view.  &lt;em&gt;Note that</span></span><br><span class="line"><span class="comment"> * this may be null.&lt;/em&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> name The fully qualified class name of the View to be create.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> attrs An AttributeSet of attributes to apply to the View.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> View The View created.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> View <span class="title">onCreateView</span><span class="params">(View parent, String name, AttributeSet attrs)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> onCreateView(name, attrs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This routine is responsible for creating the correct subclass of View</span></span><br><span class="line"><span class="comment"> * given the xml element name. Override it to handle custom view objects. If</span></span><br><span class="line"><span class="comment"> * you override this in your subclass be sure to call through to</span></span><br><span class="line"><span class="comment"> * super.onCreateView(name) for names you do not recognize.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> name The fully qualified class name of the View to be create.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> attrs An AttributeSet of attributes to apply to the View.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> View The View created.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> View <span class="title">onCreateView</span><span class="params">(String name, AttributeSet attrs)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> createView(name, <span class="string">&quot;android.view.&quot;</span>, attrs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到也是调用的相同方法，只是前缀默认拼上了<code>android.view.</code>，我们自己包名的控件拼接上这个肯定就找不到了，所以这个是系统控件，如<code>TextView</code>等会变成<code>android.view.TextView</code>，到这里我们就把整个<code>setContentView</code>的流程梳理完了。</p>
+
+  
+  
+    
+    <div class='footer'>
+      
+      
+      
+        <div class='copyright'>
+          <blockquote>
+            
+              
+                <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+              
+            
+              
+                <p>本文永久链接是：<a href=http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/>http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/</a></p>
+              
+            
+          </blockquote>
+        </div>
+      
+      
+    </div>
+  
+  
+    
+
+
+  <div class='article-meta' id="bottom">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-08-08T23:53:24+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：Aug 8, 2021</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/source/tags/Android/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Android</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/&title=Activity显示流程 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/&title=Activity显示流程 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/&title=Activity显示流程 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </div>
+
+
+  
+  
+
+  
+    <div class="prev-next">
+      
+        <a class='prev' href='/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/'>
+          <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>UI刷新机制</p>
+          <p class='content'>UI刷新机制
+以下代码分析均基于Android9.0(API28)
+
+我们从ViewRootImpl的requestLayout()方法开始
+123456789public void reque...</p>
+        </a>
+      
+      
+    </div>
+  
+</article>
+
+
+  
+
+  <article class="post white-box reveal shadow" id="comments">
+    <p ct><i class='fas fa-comments'></i> 评论</p>
+    
+    <div id="valine_container" class="valine_thread">
+  <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+</div>
+
+  </article>
+
+
+
+
+
+
+</div>
+<aside class='l_side'>
+  
+  
+    
+    
+
+
+
+  <section class="widget toc-wrapper shadow desktop mobile" id="toc-div" >
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+        
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+
+		  
+		  <!--此文件用来存放一些不方便取值的变量-->
+<!--思路大概是将值藏到重加载的区域内-->
+
+<script>
+  window.pdata={}
+  pdata.ispage=true;
+  pdata.postTitle="Activity显示流程";
+  pdata.commentPath="";
+  pdata.commentPlaceholder="";
+  // header 这里无论是否开启pjax都需要
+  var l_header=document.getElementById("l_header");
+  
+  l_header.classList.add("show");
+  
+  
+    // cover
+    var cover_wrapper=document.querySelector('.cover-wrapper');
+    
+    cover_wrapper.id="none";
+    cover_wrapper.style.display="none";
+    
+  
+</script>
+
+        </div>
+        
+  
+  <footer class="footer clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+          
+            
+          
+            
+          
+        </div>
+      
+    
+      
+        <div><p>Blog content follows the <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+</div>
+      
+    
+      
+        
+          <div><p><span id="lc-sv">本站总访问量为 <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 次</span> <span id="lc-uv">访客数为 <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 人</span></p>
+</div>
+        
+      
+    
+      
+        Use
+        <a href="https://github.com/volantis-x/hexo-theme-volantis/tree/4.3.1" target="_blank" class="codename">Volantis</a>
+        as theme
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="/">Copyright © 2017-2020 XXX</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+
+        <a id="s-top" class="fas fa-arrow-up fa-fw" href="javascript:void(0)"></a>
+      </div>
+    </div>
+    <div>
+      <script>
+/************这个文件存放不需要重载的全局变量和全局函数*********/
+window.volantis={};
+window.volantis.loadcss=document.getElementById("loadcss");
+/******************** Pjax ********************************/
+function VPjax(){
+	this.list=[] // 存放回调函数
+	this.start=()=>{
+	  for(var i=0;i<this.list.length;i++){
+		this.list[i].run();
+	  }
+	}
+	this.push=(fn,name)=>{
+		var f=new PjaxItem(fn,name);
+		this.list.push(f);
+	}
+	// 构造一个可以run的对象
+	function PjaxItem(fn,name){
+		// 函数名称
+		this.name = name || fn.name
+		// run方法
+		this.run=()=>{
+			fn()
+		}
+	}
+}
+volantis.pjax={}
+volantis.pjax.method={
+	complete: new VPjax(),
+	error: new VPjax(),
+	send: new VPjax()
+}
+volantis.pjax={
+	...volantis.pjax,
+	push: volantis.pjax.method.complete.push,
+	error: volantis.pjax.method.error.push,
+	send: volantis.pjax.method.send.push
+}
+/********************脚本懒加载函数********************************/
+// 已经加入了setTimeout
+function loadScript(src, cb) {
+	setTimeout(function() {
+		var HEAD = document.getElementsByTagName('head')[0] || document.documentElement;
+		var script = document.createElement('script');
+		script.setAttribute('type','text/javascript');
+		if (cb) script.onload = cb;
+		script.setAttribute('src', src);
+		HEAD.appendChild(script);
+	});
+}
+//https://github.com/filamentgroup/loadCSS
+var loadCSS = function( href, before, media, attributes ){
+	var doc = window.document;
+	var ss = doc.createElement( "link" );
+	var ref;
+	if( before ){
+		ref = before;
+	}
+	else {
+		var refs = ( doc.body || doc.getElementsByTagName( "head" )[ 0 ] ).childNodes;
+		ref = refs[ refs.length - 1];
+	}
+	var sheets = doc.styleSheets;
+	if( attributes ){
+		for( var attributeName in attributes ){
+			if( attributes.hasOwnProperty( attributeName ) ){
+				ss.setAttribute( attributeName, attributes[attributeName] );
+			}
+		}
+	}
+	ss.rel = "stylesheet";
+	ss.href = href;
+	ss.media = "only x";
+	function ready( cb ){
+		if( doc.body ){
+			return cb();
+		}
+		setTimeout(function(){
+			ready( cb );
+		});
+	}
+	ready( function(){
+		ref.parentNode.insertBefore( ss, ( before ? ref : ref.nextSibling ) );
+	});
+	var onloadcssdefined = function( cb ){
+		var resolvedHref = ss.href;
+		var i = sheets.length;
+		while( i-- ){
+			if( sheets[ i ].href === resolvedHref ){
+				return cb();
+			}
+		}
+		setTimeout(function() {
+			onloadcssdefined( cb );
+		});
+	};
+	function loadCB(){
+		if( ss.addEventListener ){
+			ss.removeEventListener( "load", loadCB );
+		}
+		ss.media = media || "all";
+	}
+	if( ss.addEventListener ){
+		ss.addEventListener( "load", loadCB);
+	}
+	ss.onloadcssdefined = onloadcssdefined;
+	onloadcssdefined( loadCB );
+	return ss;
+};
+</script>
+<script>
+  
+  loadCSS("https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14/css/all.min.css", window.volantis.loadcss);
+  
+  
+  
+  
+</script>
+<!-- required -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5/dist/jquery.min.js"></script>
+
+<script>
+  function pjax_fancybox() {
+    $(".md .gallery").find("img").each(function () { //渲染 fancybox
+      var element = document.createElement("a"); // a 标签
+      $(element).attr("class", "fancybox");
+      $(element).attr("pjax-fancybox", "");  // 过滤 pjax
+      $(element).attr("href", $(this).attr("src"));
+      if ($(this).attr("data-original")) {
+        $(element).attr("href", $(this).attr("data-original"));
+      }
+      $(element).attr("data-fancybox", "images");
+      var caption = "";   // 描述信息
+      if ($(this).attr('alt')) {  // 判断当前页面是否存在描述信息
+        $(element).attr('data-caption', $(this).attr('alt'));
+        caption = $(this).attr('alt');
+      }
+      var div = document.createElement("div");
+      $(div).addClass("fancybox");
+      $(this).wrap(div); // 最外层套 div ，其实主要作用还是 class 样式
+      var span = document.createElement("span");
+      $(span).addClass("image-caption");
+      $(span).text(caption); // 加描述
+      $(this).after(span);  // 再套一层描述
+      $(this).wrap(element);  // 最后套 a 标签
+    })
+    $(".md .gallery").find("img").fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+      closeClick: true,
+      helpers: {
+        overlay: {closeClick: true}
+      },
+      buttons: [
+        "zoom",
+        "close"
+      ]
+    });
+  };
+  function SCload_fancybox() {
+    if ($(".md .gallery").find("img").length == 0) return;
+    loadCSS("https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css", document.getElementById("loadcss"));
+    loadScript('https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', pjax_fancybox)
+  };
+  $(function () {
+    SCload_fancybox();
+  });
+  function Pjax_SCload_fancybox(){
+	if (typeof $.fancybox == "undefined") {
+	 SCload_fancybox();
+    } else {
+	 pjax_fancybox();
+    }
+  }
+  volantis.pjax.push(Pjax_SCload_fancybox)
+  volantis.pjax.send(()=>{
+      if (typeof $.fancybox != "undefined") {
+        $.fancybox.close();    // 关闭弹窗
+      }
+  },'fancybox')
+</script>
+
+
+<!-- internal -->
+
+
+
+
+<script>
+  function loadIssuesJS() {
+    if ($(".md").find(".issues-api").length == 0) return;
+	
+	  loadScript('/js/issues.js');
+	
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  volantis.pjax.push(()=>{
+	if (typeof IssuesAPI == "undefined") {
+	  loadIssuesJS();
+	}
+  },"IssuesJS")
+</script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+
+
+  
+
+<script>
+  window.FPConfig = {
+	delay: 0,
+	ignoreKeywords: [],
+	maxRPS: 5,
+	hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+<script src="/js/valine.js"></script>
+
+
+<script>
+  function emoji(path, idx, ext) {
+    return path + "/" + path + "-" + idx + "." + ext;
+  }
+  var emojiMaps = {};
+  for (var i = 1; i <= 54; i++) {
+    emojiMaps['tieba-' + i] = emoji('tieba', i, 'png');
+  }
+  for (var i = 1; i <= 101; i++) {
+    emojiMaps['qq-' + i] = emoji('qq', i, 'gif');
+  }
+  for (var i = 1; i <= 116; i++) {
+    emojiMaps['aru-' + i] = emoji('aru', i, 'gif');
+  }
+  for (var i = 1; i <= 125; i++) {
+    emojiMaps['twemoji-' + i] = emoji('twemoji', i, 'png');
+  }
+  for (var i = 1; i <= 4; i++) {
+    emojiMaps['weibo-' + i] = emoji('weibo', i, 'png');
+  }
+  function pjax_valine() {
+    if(!document.querySelectorAll("#valine_container")[0])return;
+    let pagePlaceholder = pdata.commentPlaceholder || "快来评论吧~";
+    let path = pdata.commentPath;
+    if (path.length == 0) {
+      let defaultPath = '';
+      path = defaultPath || decodeURI(window.location.pathname);
+    }
+    var valine = new Valine();
+    valine.init(Object.assign({"path":null,"placeholder":"快来评论吧~","appId":null,"appKey":null,"meta":["nick","mail","link"],"requiredFields":["nick","mail"],"enableQQ":true,"recordIP":false,"avatar":"robohash","pageSize":10,"lang":"zh-cn","highlight":true,"mathJax":false}, {
+      el: '#valine_container',
+      path: path,
+      placeholder: pagePlaceholder,
+      emojiCDN: 'https://cdn.jsdelivr.net/gh/volantis-x/cdn-emoji/valine/',
+      emojiMaps: emojiMaps,
+    }))
+  }
+  $(function () {
+    pjax_valine();
+  });
+  volantis.pjax.push(pjax_valine);
+</script>
+
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+<!-- optional -->
+
+  <script>
+const SearchServiceimagePath="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/img/";
+const ROOT =  ("/" || "/").endsWith('/') ? ("/" || "/") : ("//" || "/" );
+
+$('.input.u-search-input').one('focus',function(){
+	
+		loadScript('/js/search/hexo.js',setSearchService);
+	
+})
+
+function listenSearch(){
+  
+    customSearch = new HexoSearch({
+      imagePath: SearchServiceimagePath
+    });
+  
+}
+function setSearchService() {
+	listenSearch();
+	
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script defer>
+
+  const LCCounter = {
+    app_id: 'u9j57bwJod4EDmXWdxrwuqQT-MdYXbMMI',
+    app_key: 'jfHtEKVE24j0IVCGHbvuFClp',
+    custom_api_server: '',
+
+    // 查询存储的记录
+    getRecord(Counter, url, title) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({url})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {url, title: title, times: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    },
+
+    // 发起自增请求
+    increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    },
+
+    // 构建自增请求体
+    buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "times": {
+            '__op': 'Increment',
+            'amount': 1
+          }
+        }
+      }
+    },
+
+    // 校验是否为有效的 UV
+    validUV() {
+      var key = 'LeanCloudUVTimestamp';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    },
+
+    addCount(Counter) {
+      var enableIncr = '' === 'true' && window.location.hostname !== 'localhost';
+      enableIncr = true;
+      var getterArr = [];
+      var incrArr = [];
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#lc-sv');
+      if (pvCtn || enableIncr) {
+        var pvGetter = this.getRecord(Counter, 'http://example.com' + '/#lc-sv', 'Visits').then((record) => {
+          incrArr.push(this.buildIncrement(record.objectId))
+          var eles = document.querySelectorAll('#lc-sv #number');
+          if (eles.length > 0) {
+            eles.forEach((el,index,array)=>{
+              el.innerText = record.times + 1;
+              if (pvCtn) {
+                pvCtn.style.display = 'inline';
+              }
+            })
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#lc-uv');
+      if (uvCtn || enableIncr) {
+        var uvGetter = this.getRecord(Counter, 'http://example.com' + '/#lc-uv', 'Visitors').then((record) => {
+          var vuv = this.validUV();
+          vuv && incrArr.push(this.buildIncrement(record.objectId))
+          var eles = document.querySelectorAll('#lc-uv #number');
+          if (eles.length > 0) {
+            eles.forEach((el,index,array)=>{
+              el.innerText = record.times + (vuv ? 1 : 0);
+              if (uvCtn) {
+                uvCtn.style.display = 'inline';
+              }
+            })
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 请求文章的浏览数，如果是当前页面就自增
+      var allPV = document.querySelectorAll('#lc-pv');
+      if (allPV.length > 0 || enableIncr) {
+        for (i = 0; i < allPV.length; i++) {
+          let pv = allPV[i];
+          let title = pv.getAttribute('data-title');
+          var url = 'http://example.com' + pv.getAttribute('data-path');
+          if (url) {
+            var viewGetter = this.getRecord(Counter, url, title).then((record) => {
+              // 是当前页面就自增
+              let curPath = window.location.pathname;
+              if (curPath.includes('index.html')) {
+                curPath = curPath.substring(0, curPath.lastIndexOf('index.html'));
+              }
+              if (pv.getAttribute('data-path') == curPath) {
+                incrArr.push(this.buildIncrement(record.objectId));
+              }
+              if (pv) {
+                var ele = pv.querySelector('#lc-pv #number');
+                if (ele) {
+                  if (pv.getAttribute('data-path') == curPath) {
+                    ele.innerText = (record.times || 0) + 1;
+                  } else {
+                    ele.innerText = record.times || 0;
+                  }
+                  pv.style.display = 'inline';
+                }
+              }
+            });
+            getterArr.push(viewGetter);
+          }
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && this.increment(Counter, incrArr);
+        })
+      }
+
+    },
+
+
+    fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': this.app_id,
+            'X-LC-Key': this.app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      this.addCount(Counter);
+    },
+
+    refreshCounter() {
+      var api_server = this.app_id.slice(-9) !== '-MdYXbMMI' ? this.custom_api_server : `https://${ this.app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+      if (api_server) {
+        this.fetchData(api_server);
+      } else {
+        fetch('https://app-router.leancloud.cn/2/route?appId=' + this.app_id)
+          .then(resp => resp.json())
+          .then(({api_server}) => {
+            this.fetchData('https://' + api_server);
+          });
+      }
+    }
+
+  };
+
+  LCCounter.refreshCounter();
+
+  document.addEventListener('pjax:complete', function () {
+    LCCounter.refreshCounter();
+  });
+</script>
+
+
+
+
+  <script>
+const rootElement = document.documentElement;
+const darkModeStorageKey = "user-color-scheme";
+const rootElementDarkModeAttributeName = "data-user-color-scheme";
+
+const setLS = (k, v) => {
+    localStorage.setItem(k, v);
+};
+
+const removeLS = (k) => {
+    localStorage.removeItem(k);
+};
+
+const getLS = (k) => {
+    return localStorage.getItem(k);
+};
+
+const getModeFromCSSMediaQuery = () => {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+};
+
+const resetRootDarkModeAttributeAndLS = () => {
+  rootElement.removeAttribute(rootElementDarkModeAttributeName);
+  removeLS(darkModeStorageKey);
+};
+
+const validColorModeKeys = {
+  dark: true,
+  light: true,
+};
+
+const applyCustomDarkModeSettings = (mode) => {
+  const currentSetting = mode || getLS(darkModeStorageKey);
+
+  if (currentSetting === getModeFromCSSMediaQuery()) {
+    resetRootDarkModeAttributeAndLS();
+  } else if (validColorModeKeys[currentSetting]) {
+    rootElement.setAttribute(rootElementDarkModeAttributeName, currentSetting);
+  } else {
+    resetRootDarkModeAttributeAndLS();
+  }
+};
+
+const invertDarkModeObj = {
+  dark: "light",
+  light: "dark",
+};
+
+/**
+ * get target mode
+ */
+const toggleCustomDarkMode = () => {
+  let currentSetting = getLS(darkModeStorageKey);
+
+  if (validColorModeKeys[currentSetting]) {
+    currentSetting = invertDarkModeObj[currentSetting];
+  } else if (currentSetting === null) {
+    currentSetting = invertDarkModeObj[getModeFromCSSMediaQuery()];
+  } else {
+    return;
+  }
+  setLS(darkModeStorageKey, currentSetting);
+  return currentSetting;
+};
+
+/**
+ * bind click event for toggle button
+ */
+var btn=$("#wrapper .toggle-mode-btn,#rightmenu-wrapper .toggle-mode-btn");
+function bindToggleButton() {
+    btn.on('click',(e) => {
+      const mode = toggleCustomDarkMode();
+      applyCustomDarkModeSettings(mode);
+    });
+}
+
+applyCustomDarkModeSettings();
+document.addEventListener("DOMContentLoaded", bindToggleButton);
+volantis.pjax.push(bindToggleButton);
+volantis.pjax.send(()=>{
+	btn.unbind('click');
+},'toggle-mode-btn-unbind');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function listennSidebarTOC() {
+  const navItems = document.querySelectorAll(".toc li");
+  if (!navItems.length) return;
+  const sections = [...navItems].map((element) => {
+    const link = element.querySelector(".toc-link");
+    const target = document.getElementById(
+      decodeURI(link.getAttribute("href")).replace("#", "")
+    );
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.scrollTo({
+		top: target.offsetTop + 100,
+		
+		behavior: "smooth"
+		
+	  });
+    });
+    return target;
+  });
+
+  function activateNavByIndex(target) {
+    if (target.classList.contains("active-current")) return;
+
+    document.querySelectorAll(".toc .active").forEach((element) => {
+      element.classList.remove("active", "active-current");
+    });
+    target.classList.add("active", "active-current");
+    let parent = target.parentNode;
+    while (!parent.matches(".toc")) {
+      if (parent.matches("li")) parent.classList.add("active");
+      parent = parent.parentNode;
+    }
+  }
+
+  function findIndex(entries) {
+    let index = 0;
+    let entry = entries[index];
+    if (entry.boundingClientRect.top > 0) {
+      index = sections.indexOf(entry.target);
+      return index === 0 ? 0 : index - 1;
+    }
+    for (; index < entries.length; index++) {
+      if (entries[index].boundingClientRect.top <= 0) {
+        entry = entries[index];
+      } else {
+        return sections.indexOf(entry.target);
+      }
+    }
+    return sections.indexOf(entry.target);
+  }
+
+  function createIntersectionObserver(marginTop) {
+    marginTop = Math.floor(marginTop + 10000);
+    let intersectionObserver = new IntersectionObserver(
+      (entries, observe) => {
+        let scrollHeight = document.documentElement.scrollHeight + 100;
+        if (scrollHeight > marginTop) {
+          observe.disconnect();
+          createIntersectionObserver(scrollHeight);
+          return;
+        }
+        let index = findIndex(entries);
+        activateNavByIndex(navItems[index]);
+      },
+      {
+        rootMargin: marginTop + "px 0px -100% 0px",
+        threshold: 0,
+      }
+    );
+    sections.forEach((element) => {
+      element && intersectionObserver.observe(element);
+    });
+  }
+  createIntersectionObserver(document.documentElement.scrollHeight);
+}
+
+document.addEventListener("DOMContentLoaded", listennSidebarTOC);
+document.addEventListener("pjax:success", listennSidebarTOC);
+</script>
+
+<!-- more -->
+
+ 
+	   
+	    
+
+
+<script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script>
+
+
+<script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      pjax = new Pjax({
+        elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([pjax-fancybox])',
+        selectors: [
+          "title",
+          
+          "#pjax-container",
+          "#pjax-header-nav-list"
+        ],
+        cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+        timeout: 5000
+      });
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+      //window.stop(); // 相当于点击了浏览器的停止按钮
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      window.subData = null; // 移除标题（用于一二级导航栏切换处）
+
+      volantis.$switcher.removeClass('active'); // 关闭移动端激活的搜索框
+      volantis.$header.removeClass('z_search-open'); // 关闭移动端激活的搜索框
+      volantis.$wrapper.removeClass('sub'); // 跳转页面时关闭二级导航
+
+      // 解绑事件 避免重复监听
+      volantis.$topBtn.unbind('click');
+      $('.menu a').unbind('click');
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+	  // 使用 volantis.pjax.send 方法传入pjax:send回调函数 参见layout/_partial/scripts/global.ejs
+	  volantis.pjax.method.send.start();
+    });
+
+    document.addEventListener('pjax:complete', function () {
+      $('.nav-main').find('.list-v').not('.menu-phone').removeAttr("style",""); // 移除小尾巴的移除
+      $('.menu-phone.list-v').removeAttr("style",""); // 移除小尾巴的移除
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+      try{
+		// 使用 volantis.pjax.push 方法传入重载函数 参见layout/_partial/scripts/global.ejs
+		volantis.pjax.method.complete.start();
+      } catch (e) {
+        console.log(e);
+      }
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+	  // 使用 volantis.pjax.error 方法传入pjax:error回调函数 参见layout/_partial/scripts/global.ejs
+	  volantis.pjax.method.error.start();
+      window.location.href = e.triggerElement.href;
+    });
+</script>
+ 
+	  
+    </div>
+  </body>
+</html>

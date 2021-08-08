@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head hexo-theme='https://github.com/volantis-x/hexo-theme-volantis/tree/4.3.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <link rel="preload" href="/css/first.css" as="style">
+  
+
+  <!-- 页面元数据 -->
+  
+  <title>UI刷新机制 - Serenade&#39;s Blog</title>
+  
+    <meta name="keywords" content="Android">
+  
+
+  
+
+  <!-- feed -->
+  
+
+  <!-- import meta -->
+  
+
+  <!-- link -->
+  
+
+  <!-- import link -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/first.css">
+
+  
+
+  
+  <link rel="stylesheet" href="/css/style.css" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link rel="stylesheet" href="/css/style.css"></noscript>
+  
+
+  <script id="loadcss"></script>
+
+  
+<script>
+if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode))
+    document.write(
+	'<style>'+
+		'html{'+
+			'overflow-x: hidden !important;'+
+			'overflow-y: hidden !important;'+
+		'}'+
+		'.kill-ie{'+
+			'text-align:center;'+
+			'height: 100%;'+
+			'margin-top: 15%;'+
+			'margin-bottom: 5500%;'+
+		'}'+
+	'</style>'+
+    '<div class="kill-ie">'+
+        '<h1><b>抱歉，您的浏览器无法访问本站</b></h1>'+
+        '<h3>微软已经于2016年终止了对 Internet Explorer (IE) 10 及更早版本的支持，<br/>'+
+        '继续使用存在极大的安全隐患，请使用当代主流的浏览器进行访问。</h3><br/>'+
+        '<a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-cn/WindowsForBusiness/End-of-IE-support"><strong>了解详情 ></strong></a>'+
+    '</div>');
+</script>
+
+
+<noscript>
+	<style>
+		html{
+			overflow-x: hidden !important;
+			overflow-y: hidden !important;
+		}
+		.kill-noscript{
+			text-align:center;
+			height: 100%;
+			margin-top: 15%;
+			margin-bottom: 5500%;
+		}
+	</style>
+    <div class="kill-noscript">
+        <h1><b>抱歉，您的浏览器无法访问本站</b></h1>
+        <h3>本页面需要浏览器支持（启用）JavaScript</h3><br/>
+        <a target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=启用JavaScript"><strong>了解详情 ></strong></a>
+    </div>
+</noscript>
+
+</head>
+
+  <body>
+    
+
+<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
+  <div class='container'>
+  <div id='wrapper'>
+    <div class='nav-sub'>
+      <p class="title"></p>
+      <ul class='switcher nav-list-h m-phone' id="pjax-header-nav-list">
+        <li><a id="s-comment" class="fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a id="s-toc" class="s-toc fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="title flat-box" target="_self" href='/'>
+          
+            <img no-lazy class='logo' src='https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png'/>
+          
+          
+          
+        </a>
+      
+
+			<div class='menu navigation'>
+				<ul class='nav-list-h m-pc'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  <i class='fas fa-link fa-fw'></i>友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <i class="icon fas fa-search fa-fw"></i>
+          <input type="text" class="input u-search-input" placeholder="Search..." />
+        </form>
+      </div>
+
+			<ul class='switcher nav-list-h m-phone'>
+				
+					<li><a class="s-search fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li>
+          <a class="s-menu fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a>
+          <ul class="menu-phone list-v navigation white-box">
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  <i class='fas fa-link fa-fw'></i>友链
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+            
+          </ul>
+        </li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</header>
+
+    <div id="l_body">
+      <div id="l_cover">
+  
+    
+        <div id="full" class='cover-wrapper post dock' style="display: none;">
+          
+            <div class='cover-bg lazyload placeholder' data-bg="https://p26-tt.byteimg.com/origin/pgc-image/5ae0b0aa2cf445ef93bf779565c6935c.jpeg"></div>
+          
+          <div class='cover-body'>
+  <div class='top'>
+    
+    
+      <p class="title">Serenade's Blog</p>
+    
+    
+  </div>
+  <div class='bottom'>
+    <div class='menu navigation'>
+      <div class='list-h'>
+        
+          
+            <a href="/v4/getting-started/"
+              
+              
+              id="v4getting-started">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f5c3.svg'><p>文档</p>
+            </a>
+          
+            <a href="/faqs/"
+              
+              
+              id="faqs">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f516.svg'><p>帮助</p>
+            </a>
+          
+            <a href="/examples/"
+              
+              
+              id="examples">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f396.svg'><p>示例</p>
+            </a>
+          
+            <a href="/contributors/"
+              
+              
+              id="contributors">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f389.svg'><p>社区</p>
+            </a>
+          
+            <a href="/archives/"
+              
+              
+              id="archives">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f4f0.svg'><p>博客</p>
+            </a>
+          
+            <a target="_blank" rel="noopener" href="https://github.com/volantis-x/hexo-theme-volantis/"
+              
+              
+              id="https:githubcomvolantis-xhexo-theme-volantis">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f9ec.svg'><p>源码</p>
+            </a>
+          
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+          <div id="scroll-down" style="display: none;"><i class="fa fa-chevron-down scroll-down-effects"></i></div>
+        </div>
+    
+  
+  </div>
+
+      <div id="safearea">
+        <div class="body-wrapper" id="pjax-container">
+          
+
+<div class='l_main'>
+  <article class="article post white-box reveal md shadow article-type-post" id="post" itemscope itemprop="blogPost">
+  
+
+
+  
+  <div class="article-meta" id="top">
+    
+    
+    
+      <h1 class="title">
+        UI刷新机制
+      </h1>
+      <div class='new-meta-box'>
+        
+          
+            
+<div class='new-meta-item author'>
+  <a class='author' href="/" rel="nofollow">
+    <img no-lazy src="">
+    <p>请设置文章作者</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class='new-meta-item category'>
+    <a class='notlink'>
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <a class="category-link" href="/source/categories/Android/">Android</a>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：May 8, 2021</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class="new-meta-item browse leancloud">
+    <a class='notlink'>
+      
+      <div id="lc-pv" data-title="UI刷新机制" data-path="/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/">
+        <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
+        <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+        次浏览
+      </div>
+    </a>
+  </div>
+
+
+          
+        
+      </div>
+    
+  </div>
+
+
+  
+  
+  <h1 id="UI刷新机制"><a href="#UI刷新机制" class="headerlink" title="UI刷新机制"></a>UI刷新机制</h1><blockquote>
+<p>以下代码分析均基于Android9.0(API28)</p>
+</blockquote>
+<p>我们从<code>ViewRootImpl</code>的<code>requestLayout()</code>方法开始</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestLayout</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!mHandlingLayoutInLayoutRequest) &#123;</span><br><span class="line">      	<span class="comment">//检查是否是主线程</span></span><br><span class="line">        checkThread();</span><br><span class="line">        mLayoutRequested = <span class="keyword">true</span>;</span><br><span class="line">      	<span class="comment">//开启整个绘制流程</span></span><br><span class="line">        scheduleTraversals();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>requestLayout()</code>方法调用了<code>checkThread()</code>，从名字我们可以看出这个方法是用来检查线程的，我们来看一下具体实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mThread != Thread.currentThread()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CalledFromWrongThreadException(</span><br><span class="line">                <span class="string">&quot;Only the original thread that created a view hierarchy can touch its views.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到这个异常信息是不是很熟悉？没错，如果我们在非主线程进行了修改UI的操作就会抛出这个异常，接下来我们继续看<code>scheduleTraversals()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">scheduleTraversals</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//mTraversalScheduled会在doTraversal重置成false，从而保证一段时间内只会执行一次绘制</span></span><br><span class="line">    <span class="keyword">if</span> (!mTraversalScheduled) &#123;</span><br><span class="line">        mTraversalScheduled = <span class="keyword">true</span>;</span><br><span class="line">      	<span class="comment">//开启同步屏障，优先处理绘制操作</span></span><br><span class="line">        mTraversalBarrier = mHandler.getLooper().getQueue().postSyncBarrier();</span><br><span class="line">      	<span class="comment">//发送绘制消息</span></span><br><span class="line">        mChoreographer.postCallback(</span><br><span class="line">                Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, <span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">if</span> (!mUnbufferedInputDispatch) &#123;</span><br><span class="line">            scheduleConsumeBatchedInput();</span><br><span class="line">        &#125;</span><br><span class="line">        notifyRendererOfFramePending();</span><br><span class="line">        pokeDrawLockIfNeeded();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，该方法先是开启了<strong>同步屏障</strong>，因为接下来会有大量的异步消息发送，然后向<code>Choreographer</code>发送了<code>mTraversalRunnable</code>，我们先来看一下<code>postCallback()</code>发送消息的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postCallback</span><span class="params">(<span class="keyword">int</span> callbackType, Runnable action, Object token)</span> </span>&#123;</span><br><span class="line">    postCallbackDelayed(callbackType, action, token, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postCallbackDelayed</span><span class="params">(<span class="keyword">int</span> callbackType,</span></span></span><br><span class="line"><span class="params"><span class="function">        Runnable action, Object token, <span class="keyword">long</span> delayMillis)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (action == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;action must not be null&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (callbackType &lt; <span class="number">0</span> || callbackType &gt; CALLBACK_LAST) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;callbackType is invalid&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    postCallbackDelayedInternal(callbackType, action, token, delayMillis);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">postCallbackDelayedInternal</span><span class="params">(<span class="keyword">int</span> callbackType,</span></span></span><br><span class="line"><span class="params"><span class="function">        Object action, Object token, <span class="keyword">long</span> delayMillis)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (DEBUG_FRAMES) &#123;</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;PostCallback: type=&quot;</span> + callbackType</span><br><span class="line">                + <span class="string">&quot;, action=&quot;</span> + action + <span class="string">&quot;, token=&quot;</span> + token</span><br><span class="line">                + <span class="string">&quot;, delayMillis=&quot;</span> + delayMillis);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> now = SystemClock.uptimeMillis();</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> dueTime = now + delayMillis;</span><br><span class="line">        mCallbackQueues[callbackType].addCallbackLocked(dueTime, action, token);</span><br><span class="line">        <span class="comment">//如果action的执行的时间小于等于当前时间，则直接执行</span></span><br><span class="line">        <span class="keyword">if</span> (dueTime &lt;= now) &#123;</span><br><span class="line">            scheduleFrameLocked(now);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Message msg = mHandler.obtainMessage(MSG_DO_SCHEDULE_CALLBACK, action);</span><br><span class="line">            msg.arg1 = callbackType;</span><br><span class="line">            msg.setAsynchronous(<span class="keyword">true</span>);</span><br><span class="line">            mHandler.sendMessageAtTime(msg, dueTime);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>postCallback()</code>最终调到了<code>postCallbackDelayedInternal()方法</code>，然后把<code>Runnable</code>按<code>type</code>加到了<code>CallbackQueue</code>里，如果<code>Runnable</code>要执行的时间小于等于当前时间，则直接执行，否则发送<code>Message</code>延时执行，找一下处理<code>Message</code>的地方</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">        <span class="keyword">case</span> MSG_DO_FRAME:</span><br><span class="line">            doFrame(System.nanoTime(), <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MSG_DO_SCHEDULE_VSYNC:</span><br><span class="line">            doScheduleVsync();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MSG_DO_SCHEDULE_CALLBACK:</span><br><span class="line">            doScheduleCallback(msg.arg1);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">doScheduleCallback</span><span class="params">(<span class="keyword">int</span> callbackType)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!mFrameScheduled) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">long</span> now = SystemClock.uptimeMillis();</span><br><span class="line">            <span class="keyword">if</span> (mCallbackQueues[callbackType].hasDueCallbacksLocked(now)) &#123;</span><br><span class="line">                scheduleFrameLocked(now);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到最终也是调用的<code>scheduleFrameLocked()</code>方法，那我们就看一下这个方法里都做了些什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">scheduleFrameLocked</span><span class="params">(<span class="keyword">long</span> now)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!mFrameScheduled) &#123;</span><br><span class="line">        mFrameScheduled = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (USE_VSYNC) &#123;</span><br><span class="line">            <span class="keyword">if</span> (DEBUG_FRAMES) &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">&quot;Scheduling next frame on vsync.&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// If running on the Looper thread, then schedule the vsync immediately,</span></span><br><span class="line">            <span class="comment">// otherwise post a message to schedule the vsync from the UI thread</span></span><br><span class="line">            <span class="comment">// as soon as possible.</span></span><br><span class="line">            <span class="keyword">if</span> (isRunningOnLooperThreadLocked()) &#123;</span><br><span class="line">                scheduleVsyncLocked();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Message msg = mHandler.obtainMessage(MSG_DO_SCHEDULE_VSYNC);</span><br><span class="line">                msg.setAsynchronous(<span class="keyword">true</span>);</span><br><span class="line">                mHandler.sendMessageAtFrontOfQueue(msg);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">long</span> nextFrameTime = Math.max(</span><br><span class="line">                    mLastFrameTimeNanos / TimeUtils.NANOS_PER_MS + sFrameDelay, now);</span><br><span class="line">            <span class="keyword">if</span> (DEBUG_FRAMES) &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">&quot;Scheduling next frame in &quot;</span> + (nextFrameTime - now) + <span class="string">&quot; ms.&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Message msg = mHandler.obtainMessage(MSG_DO_FRAME);</span><br><span class="line">            msg.setAsynchronous(<span class="keyword">true</span>);</span><br><span class="line">            mHandler.sendMessageAtTime(msg, nextFrameTime);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个<code>USE_VSYNC</code>是否使用<strong>VSYNC</strong>的判断，而<code>USE_VSYNC</code>的值是从系统读取出来的，默认值为<code>true</code>，从这里可以看出，使用<strong>VSYNC</strong>的话会判断是否是UI线程，是的话直接执行，不是的话通过<code>Handler</code>发送<code>MSG_DO_SCHEDULE_VSYNC</code>执行，而不使用<strong>VSYNC</strong>的话是通过<code>Handler</code>发送了<code>MSG_DO_FRAME</code>执行，找一下处理这两个消息的地方</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">FrameHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FrameHandler</span><span class="params">(Looper looper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="keyword">case</span> MSG_DO_FRAME:</span><br><span class="line">                doFrame(System.nanoTime(), <span class="number">0</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> MSG_DO_SCHEDULE_VSYNC:</span><br><span class="line">                doScheduleVsync();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> MSG_DO_SCHEDULE_CALLBACK:</span><br><span class="line">                doScheduleCallback(msg.arg1);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">doScheduleVsync</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mFrameScheduled) &#123;</span><br><span class="line">            scheduleVsyncLocked();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">scheduleVsyncLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mDisplayEventReceiver.scheduleVsync();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>MSG_DO_SCHEDULE_VSYNC</code>消息最终调用到了<code>mDisplayEventReceiver</code>的<code>scheduleVsync()</code>方法，<code>mDisplayEventReceiver</code>对应的类是<code>FrameDisplayEventReceiver</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">FrameDisplayEventReceiver</span> <span class="keyword">extends</span> <span class="title">DisplayEventReceiver</span></span></span><br><span class="line"><span class="class">        <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mHavePendingVsync;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mTimestampNanos;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mFrame;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FrameDisplayEventReceiver</span><span class="params">(Looper looper, <span class="keyword">int</span> vsyncSource)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper, vsyncSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onVsync</span><span class="params">(<span class="keyword">long</span> timestampNanos, <span class="keyword">int</span> builtInDisplayId, <span class="keyword">int</span> frame)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Ignore vsync from secondary display.</span></span><br><span class="line">        <span class="comment">// This can be problematic because the call to scheduleVsync() is a one-shot.</span></span><br><span class="line">        <span class="comment">// We need to ensure that we will still receive the vsync from the primary</span></span><br><span class="line">        <span class="comment">// display which is the one we really care about.  Ideally we should schedule</span></span><br><span class="line">        <span class="comment">// vsync for a particular display.</span></span><br><span class="line">        <span class="comment">// At this time Surface Flinger won&#x27;t send us vsyncs for secondary displays</span></span><br><span class="line">        <span class="comment">// but that could change in the future so let&#x27;s log a message to help us remember</span></span><br><span class="line">        <span class="comment">// that we need to fix this.</span></span><br><span class="line">        <span class="keyword">if</span> (builtInDisplayId != SurfaceControl.BUILT_IN_DISPLAY_ID_MAIN) &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">&quot;Received vsync from secondary display, but we don&#x27;t support &quot;</span></span><br><span class="line">                    + <span class="string">&quot;this case yet.  Choreographer needs a way to explicitly request &quot;</span></span><br><span class="line">                    + <span class="string">&quot;vsync for a specific display to ensure it doesn&#x27;t lose track &quot;</span></span><br><span class="line">                    + <span class="string">&quot;of its scheduled vsync.&quot;</span>);</span><br><span class="line">            scheduleVsync();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Post the vsync event to the Handler.</span></span><br><span class="line">        <span class="comment">// The idea is to prevent incoming vsync events from completely starving</span></span><br><span class="line">        <span class="comment">// the message queue.  If there are no messages in the queue with timestamps</span></span><br><span class="line">        <span class="comment">// earlier than the frame time, then the vsync event will be processed immediately.</span></span><br><span class="line">        <span class="comment">// Otherwise, messages that predate the vsync event will be handled first.</span></span><br><span class="line">        <span class="keyword">long</span> now = System.nanoTime();</span><br><span class="line">        <span class="keyword">if</span> (timestampNanos &gt; now) &#123;</span><br><span class="line">            Log.w(TAG, <span class="string">&quot;Frame time is &quot;</span> + ((timestampNanos - now) * <span class="number">0.000001f</span>)</span><br><span class="line">                    + <span class="string">&quot; ms in the future!  Check that graphics HAL is generating vsync &quot;</span></span><br><span class="line">                    + <span class="string">&quot;timestamps using the correct timebase.&quot;</span>);</span><br><span class="line">            timestampNanos = now;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mHavePendingVsync) &#123;</span><br><span class="line">            Log.w(TAG, <span class="string">&quot;Already have a pending vsync event.  There should only be &quot;</span></span><br><span class="line">                    + <span class="string">&quot;one at a time.&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mHavePendingVsync = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mTimestampNanos = timestampNanos;</span><br><span class="line">        mFrame = frame;</span><br><span class="line">        Message msg = Message.obtain(mHandler, <span class="keyword">this</span>);</span><br><span class="line">        msg.setAsynchronous(<span class="keyword">true</span>);</span><br><span class="line">        mHandler.sendMessageAtTime(msg, timestampNanos / TimeUtils.NANOS_PER_MS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mHavePendingVsync = <span class="keyword">false</span>;</span><br><span class="line">        doFrame(mTimestampNanos, mFrame);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>FrameDisplayEventReceiver</code>类里没有<code>scheduleVsync()</code>方法，那就是在他爹<code>DisplayEventReceiver</code>里了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Schedules a single vertical sync pulse to be delivered when the next</span></span><br><span class="line"><span class="comment"> * display frame begins.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduleVsync</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mReceiverPtr == <span class="number">0</span>) &#123;</span><br><span class="line">        Log.w(TAG, <span class="string">&quot;Attempted to schedule a vertical sync pulse but the display event &quot;</span></span><br><span class="line">                + <span class="string">&quot;receiver has already been disposed.&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        nativeScheduleVsync(mReceiverPtr);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">nativeScheduleVsync</span><span class="params">(<span class="keyword">long</span> receiverPtr)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>果然在<code>DisplayEventReceiver</code>里找到了对应方法，根据注释和名字可以得出这个方法是注册一个<code>VSYNC</code>刷新监听，他的回调是<code>onVsync()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Called when a vertical sync pulse is received.</span></span><br><span class="line"><span class="comment"> * The recipient should render a frame and then call &#123;<span class="doctag">@link</span> #scheduleVsync&#125;</span></span><br><span class="line"><span class="comment"> * to schedule the next vertical sync pulse.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> timestampNanos The timestamp of the pulse, in the &#123;<span class="doctag">@link</span> System#nanoTime()&#125;</span></span><br><span class="line"><span class="comment"> * timebase.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> builtInDisplayId The surface flinger built-in display id such as</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> SurfaceControl#BUILT_IN_DISPLAY_ID_MAIN&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> frame The frame number.  Increases by one for each vertical sync interval.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onVsync</span><span class="params">(<span class="keyword">long</span> timestampNanos, <span class="keyword">int</span> builtInDisplayId, <span class="keyword">int</span> frame)</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>诶？怎么是个空方法，那必然是子类重写了该方法实现了一些具体的逻辑，回到刚刚那个<code>FrameDisplayEventReceiver</code>类，可以看到果然重写了<code>onVsync()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onVsync</span><span class="params">(<span class="keyword">long</span> timestampNanos, <span class="keyword">int</span> builtInDisplayId, <span class="keyword">int</span> frame)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Ignore vsync from secondary display.</span></span><br><span class="line">    <span class="comment">// This can be problematic because the call to scheduleVsync() is a one-shot.</span></span><br><span class="line">    <span class="comment">// We need to ensure that we will still receive the vsync from the primary</span></span><br><span class="line">    <span class="comment">// display which is the one we really care about.  Ideally we should schedule</span></span><br><span class="line">    <span class="comment">// vsync for a particular display.</span></span><br><span class="line">    <span class="comment">// At this time Surface Flinger won&#x27;t send us vsyncs for secondary displays</span></span><br><span class="line">    <span class="comment">// but that could change in the future so let&#x27;s log a message to help us remember</span></span><br><span class="line">    <span class="comment">// that we need to fix this.</span></span><br><span class="line">    <span class="keyword">if</span> (builtInDisplayId != SurfaceControl.BUILT_IN_DISPLAY_ID_MAIN) &#123;</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;Received vsync from secondary display, but we don&#x27;t support &quot;</span></span><br><span class="line">                + <span class="string">&quot;this case yet.  Choreographer needs a way to explicitly request &quot;</span></span><br><span class="line">                + <span class="string">&quot;vsync for a specific display to ensure it doesn&#x27;t lose track &quot;</span></span><br><span class="line">                + <span class="string">&quot;of its scheduled vsync.&quot;</span>);</span><br><span class="line">        scheduleVsync();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Post the vsync event to the Handler.</span></span><br><span class="line">    <span class="comment">// The idea is to prevent incoming vsync events from completely starving</span></span><br><span class="line">    <span class="comment">// the message queue.  If there are no messages in the queue with timestamps</span></span><br><span class="line">    <span class="comment">// earlier than the frame time, then the vsync event will be processed immediately.</span></span><br><span class="line">    <span class="comment">// Otherwise, messages that predate the vsync event will be handled first.</span></span><br><span class="line">    <span class="keyword">long</span> now = System.nanoTime();</span><br><span class="line">    <span class="keyword">if</span> (timestampNanos &gt; now) &#123;</span><br><span class="line">        Log.w(TAG, <span class="string">&quot;Frame time is &quot;</span> + ((timestampNanos - now) * <span class="number">0.000001f</span>)</span><br><span class="line">                + <span class="string">&quot; ms in the future!  Check that graphics HAL is generating vsync &quot;</span></span><br><span class="line">                + <span class="string">&quot;timestamps using the correct timebase.&quot;</span>);</span><br><span class="line">        timestampNanos = now;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mHavePendingVsync) &#123;</span><br><span class="line">        Log.w(TAG, <span class="string">&quot;Already have a pending vsync event.  There should only be &quot;</span></span><br><span class="line">                + <span class="string">&quot;one at a time.&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mHavePendingVsync = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mTimestampNanos = timestampNanos;</span><br><span class="line">    mFrame = frame;</span><br><span class="line">    Message msg = Message.obtain(mHandler, <span class="keyword">this</span>);</span><br><span class="line">    msg.setAsynchronous(<span class="keyword">true</span>);</span><br><span class="line">    mHandler.sendMessageAtTime(msg, timestampNanos / TimeUtils.NANOS_PER_MS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到里面就是发送了一个定时消息，然后执行的<code>Runnable</code>是自身，那我们看一下<code>run()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mHavePendingVsync = <span class="keyword">false</span>;</span><br><span class="line">    doFrame(mTimestampNanos, mFrame);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>诶？<code>doFrame()</code>？看着有点眼熟啊，这不是刚刚分叉那个地方另外一个分支调用的方法吗，到这统一了，那就看看<code>doFrame()</code>里具体干了什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">doFrame</span><span class="params">(<span class="keyword">long</span> frameTimeNanos, <span class="keyword">int</span> frame)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">long</span> startNanos;</span><br><span class="line">    <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!mFrameScheduled) &#123;</span><br><span class="line">            <span class="keyword">return</span>; <span class="comment">// no work to do</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (DEBUG_JANK &amp;&amp; mDebugPrintNextFrameTimeDelta) &#123;</span><br><span class="line">            mDebugPrintNextFrameTimeDelta = <span class="keyword">false</span>;</span><br><span class="line">            Log.d(TAG, <span class="string">&quot;Frame time delta: &quot;</span></span><br><span class="line">                    + ((frameTimeNanos - mLastFrameTimeNanos) * <span class="number">0.000001f</span>) + <span class="string">&quot; ms&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> intendedFrameTimeNanos = frameTimeNanos;</span><br><span class="line">        startNanos = System.nanoTime();</span><br><span class="line">      	<span class="comment">//注释1</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> jitterNanos = startNanos - frameTimeNanos;</span><br><span class="line">        <span class="keyword">if</span> (jitterNanos &gt;= mFrameIntervalNanos) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">long</span> skippedFrames = jitterNanos / mFrameIntervalNanos;</span><br><span class="line">            <span class="keyword">if</span> (skippedFrames &gt;= SKIPPED_FRAME_WARNING_LIMIT) &#123;</span><br><span class="line">                Log.i(TAG, <span class="string">&quot;Skipped &quot;</span> + skippedFrames + <span class="string">&quot; frames!  &quot;</span></span><br><span class="line">                        + <span class="string">&quot;The application may be doing too much work on its main thread.&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">long</span> lastFrameOffset = jitterNanos % mFrameIntervalNanos;</span><br><span class="line">            <span class="keyword">if</span> (DEBUG_JANK) &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">&quot;Missed vsync by &quot;</span> + (jitterNanos * <span class="number">0.000001f</span>) + <span class="string">&quot; ms &quot;</span></span><br><span class="line">                        + <span class="string">&quot;which is more than the frame interval of &quot;</span></span><br><span class="line">                        + (mFrameIntervalNanos * <span class="number">0.000001f</span>) + <span class="string">&quot; ms!  &quot;</span></span><br><span class="line">                        + <span class="string">&quot;Skipping &quot;</span> + skippedFrames + <span class="string">&quot; frames and setting frame &quot;</span></span><br><span class="line">                        + <span class="string">&quot;time to &quot;</span> + (lastFrameOffset * <span class="number">0.000001f</span>) + <span class="string">&quot; ms in the past.&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            frameTimeNanos = startNanos - lastFrameOffset;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (frameTimeNanos &lt; mLastFrameTimeNanos) &#123;</span><br><span class="line">            <span class="keyword">if</span> (DEBUG_JANK) &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">&quot;Frame time appears to be going backwards.  May be due to a &quot;</span></span><br><span class="line">                        + <span class="string">&quot;previously skipped frame.  Waiting for next vsync.&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            scheduleVsyncLocked();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mFPSDivisor &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">long</span> timeSinceVsync = frameTimeNanos - mLastFrameTimeNanos;</span><br><span class="line">            <span class="keyword">if</span> (timeSinceVsync &lt; (mFrameIntervalNanos * mFPSDivisor) &amp;&amp; timeSinceVsync &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                scheduleVsyncLocked();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        mFrameInfo.setVsync(intendedFrameTimeNanos, frameTimeNanos);</span><br><span class="line">        mFrameScheduled = <span class="keyword">false</span>;</span><br><span class="line">        mLastFrameTimeNanos = frameTimeNanos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Trace.traceBegin(Trace.TRACE_TAG_VIEW, <span class="string">&quot;Choreographer#doFrame&quot;</span>);</span><br><span class="line">        AnimationUtils.lockAnimationClock(frameTimeNanos / TimeUtils.NANOS_PER_MS);</span><br><span class="line"></span><br><span class="line">      	<span class="comment">//注释2</span></span><br><span class="line">        mFrameInfo.markInputHandlingStart();</span><br><span class="line">        doCallbacks(Choreographer.CALLBACK_INPUT, frameTimeNanos);</span><br><span class="line"></span><br><span class="line">        mFrameInfo.markAnimationsStart();</span><br><span class="line">        doCallbacks(Choreographer.CALLBACK_ANIMATION, frameTimeNanos);</span><br><span class="line"></span><br><span class="line">        mFrameInfo.markPerformTraversalsStart();</span><br><span class="line">        doCallbacks(Choreographer.CALLBACK_TRAVERSAL, frameTimeNanos);</span><br><span class="line"></span><br><span class="line">        doCallbacks(Choreographer.CALLBACK_COMMIT, frameTimeNanos);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        AnimationUtils.unlockAnimationClock();</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_VIEW);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (DEBUG_FRAMES) &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> endNanos = System.nanoTime();</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;Frame &quot;</span> + frame + <span class="string">&quot;: Finished, took &quot;</span></span><br><span class="line">                + (endNanos - startNanos) * <span class="number">0.000001f</span> + <span class="string">&quot; ms, latency &quot;</span></span><br><span class="line">                + (startNanos - frameTimeNanos) * <span class="number">0.000001f</span> + <span class="string">&quot; ms.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先看<strong>注释1</strong>的地方，这里由于frameTimeNanos是收到VSYNC后通过Handler发送的异步消息，而Handler是一个按时间排序的优先级队列，如果前一个任务执行耗时过长，后一个任务并不会按设置的时间精准执行，会延后执行，想象一下，我收到VSYNC消息后要重新渲染页面了，但是由于前面任务太耗时导致我渲染晚了，这期间屏幕显示的还是上一帧的内容，那我不就掉帧了吗，所以要用真正开始执行的时间减去发消息时的时间(VSYNC)时间，得到的差值除以刷新周期，就是掉了多少帧，这里能看到如果掉帧数大于<code>SKIPPED_FRAME_WARNING_LIMIT</code>，则会输出一个Log警告</p>
+<p>再看<strong>注释2</strong>的地方，这里调用了一堆<code>markXXXStart()</code>和<code>doCallback()</code>方法，我们先看一下<code>markXXXStart()</code>方法干了什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">markInputHandlingStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mFrameInfo[HANDLE_INPUT_START] = System.nanoTime();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">markAnimationsStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mFrameInfo[ANIMATION_START] = System.nanoTime();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">markPerformTraversalsStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mFrameInfo[PERFORM_TRAVERSALS_START] = System.nanoTime();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到只是更新了对应标记的时间，这个操作也很对的起<code>FrameInfo</code>这个类的名字哈哈，再看一下<code>doCallback()</code>里干了什么</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">doCallbacks</span><span class="params">(<span class="keyword">int</span> callbackType, <span class="keyword">long</span> frameTimeNanos)</span> </span>&#123;</span><br><span class="line">    CallbackRecord callbacks;</span><br><span class="line">    <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">        <span class="comment">// We use &quot;now&quot; to determine when callbacks become due because it&#x27;s possible</span></span><br><span class="line">        <span class="comment">// for earlier processing phases in a frame to post callbacks that should run</span></span><br><span class="line">        <span class="comment">// in a following phase, such as an input event that causes an animation to start.</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> now = System.nanoTime();</span><br><span class="line">      	<span class="comment">//按对应type获取指定时间之前的CallbackRecord链表头结点</span></span><br><span class="line">        callbacks = mCallbackQueues[callbackType].extractDueCallbacksLocked(</span><br><span class="line">                now / TimeUtils.NANOS_PER_MS);</span><br><span class="line">        <span class="keyword">if</span> (callbacks == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        mCallbacksRunning = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Update the frame time if necessary when committing the frame.</span></span><br><span class="line">        <span class="comment">// We only update the frame time if we are more than 2 frames late reaching</span></span><br><span class="line">        <span class="comment">// the commit phase.  This ensures that the frame time which is observed by the</span></span><br><span class="line">        <span class="comment">// callbacks will always increase from one frame to the next and never repeat.</span></span><br><span class="line">        <span class="comment">// We never want the next frame&#x27;s starting frame time to end up being less than</span></span><br><span class="line">        <span class="comment">// or equal to the previous frame&#x27;s commit frame time.  Keep in mind that the</span></span><br><span class="line">        <span class="comment">// next frame has most likely already been scheduled by now so we play it</span></span><br><span class="line">        <span class="comment">// safe by ensuring the commit time is always at least one frame behind.</span></span><br><span class="line">        <span class="keyword">if</span> (callbackType == Choreographer.CALLBACK_COMMIT) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">long</span> jitterNanos = now - frameTimeNanos;</span><br><span class="line">            Trace.traceCounter(Trace.TRACE_TAG_VIEW, <span class="string">&quot;jitterNanos&quot;</span>, (<span class="keyword">int</span>) jitterNanos);</span><br><span class="line">            <span class="keyword">if</span> (jitterNanos &gt;= <span class="number">2</span> * mFrameIntervalNanos) &#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="keyword">long</span> lastFrameOffset = jitterNanos % mFrameIntervalNanos</span><br><span class="line">                        + mFrameIntervalNanos;</span><br><span class="line">                <span class="keyword">if</span> (DEBUG_JANK) &#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">&quot;Commit callback delayed by &quot;</span> + (jitterNanos * <span class="number">0.000001f</span>)</span><br><span class="line">                            + <span class="string">&quot; ms which is more than twice the frame interval of &quot;</span></span><br><span class="line">                            + (mFrameIntervalNanos * <span class="number">0.000001f</span>) + <span class="string">&quot; ms!  &quot;</span></span><br><span class="line">                            + <span class="string">&quot;Setting frame time to &quot;</span> + (lastFrameOffset * <span class="number">0.000001f</span>)</span><br><span class="line">                            + <span class="string">&quot; ms in the past.&quot;</span>);</span><br><span class="line">                    mDebugPrintNextFrameTimeDelta = <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                frameTimeNanos = now - lastFrameOffset;</span><br><span class="line">                mLastFrameTimeNanos = frameTimeNanos;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Trace.traceBegin(Trace.TRACE_TAG_VIEW, CALLBACK_TRACE_TITLES[callbackType]);</span><br><span class="line">        <span class="keyword">for</span> (CallbackRecord c = callbacks; c != <span class="keyword">null</span>; c = c.next) &#123;</span><br><span class="line">            <span class="keyword">if</span> (DEBUG_FRAMES) &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">&quot;RunCallback: type=&quot;</span> + callbackType</span><br><span class="line">                        + <span class="string">&quot;, action=&quot;</span> + c.action + <span class="string">&quot;, token=&quot;</span> + c.token</span><br><span class="line">                        + <span class="string">&quot;, latencyMillis=&quot;</span> + (SystemClock.uptimeMillis() - c.dueTime));</span><br><span class="line">            &#125;</span><br><span class="line">            c.run(frameTimeNanos);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">            mCallbacksRunning = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                <span class="keyword">final</span> CallbackRecord next = callbacks.next;</span><br><span class="line">                recycleCallbackLocked(callbacks);</span><br><span class="line">                callbacks = next;</span><br><span class="line">            &#125; <span class="keyword">while</span> (callbacks != <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_VIEW);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里按对应type类型获取了指定时间之前的<code>CallbackRecord</code>链表头结点，然后遍历执行了<code>run()</code>方法，看下<code>run()</code>方法实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(<span class="keyword">long</span> frameTimeNanos)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (token == FRAME_CALLBACK_TOKEN) &#123;</span><br><span class="line">        ((FrameCallback)action).doFrame(frameTimeNanos);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ((Runnable)action).run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>token为<code>FRAME_CALLBACK_TOKEN</code>时强转为<code>FrameCallback</code>执行了<code>doFrame()</code>方法，不是的时候强转为<code>Runnable</code>执行了<code>run()</code>方法，还记得我们当初为什么进入<code>Choreographer</code>类吗，是因为<code>mChoreographer.postCallback(Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, null);</code>这里发送了一个<code>Callback</code>，这个发送最终会调用<code>postCallbackDelayedInternal()</code>方法，我们回去看下发送的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">postCallbackDelayedInternal</span><span class="params">(<span class="keyword">int</span> callbackType,</span></span></span><br><span class="line"><span class="params"><span class="function">        Object action, Object token, <span class="keyword">long</span> delayMillis)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (DEBUG_FRAMES) &#123;</span><br><span class="line">        Log.d(TAG, <span class="string">&quot;PostCallback: type=&quot;</span> + callbackType</span><br><span class="line">                + <span class="string">&quot;, action=&quot;</span> + action + <span class="string">&quot;, token=&quot;</span> + token</span><br><span class="line">                + <span class="string">&quot;, delayMillis=&quot;</span> + delayMillis);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">synchronized</span> (mLock) &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> now = SystemClock.uptimeMillis();</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> dueTime = now + delayMillis;</span><br><span class="line">        mCallbackQueues[callbackType].addCallbackLocked(dueTime, action, token);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (dueTime &lt;= now) &#123;</span><br><span class="line">            scheduleFrameLocked(now);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Message msg = mHandler.obtainMessage(MSG_DO_SCHEDULE_CALLBACK, action);</span><br><span class="line">            msg.arg1 = callbackType;</span><br><span class="line">            msg.setAsynchronous(<span class="keyword">true</span>);</span><br><span class="line">            mHandler.sendMessageAtTime(msg, dueTime);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们往<code>mCallbackQueues</code>里按<code>type</code>添加了<code>Callback</code>，而通过发送地方传的参数可以看出<code>token</code>为<code>null</code>，那么刚刚遍历执行的分支就会命中else分支，强转为<code>Runnable</code>执行<code>run()</code>方法，而我们传入的是<code>mTraversalRunnable</code>，找下声明的地方</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> TraversalRunnable mTraversalRunnable = <span class="keyword">new</span> TraversalRunnable();</span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TraversalRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        doTraversal();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>mTraversalRunnable</code>实现很简单，单纯的调用了一下<code>doTraversal()</code>，我们接下来来看<code>doTraversal()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">doTraversal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mTraversalScheduled) &#123;</span><br><span class="line">        <span class="comment">//重置标志，以便下次再次开启绘制流程</span></span><br><span class="line">        mTraversalScheduled = <span class="keyword">false</span>;</span><br><span class="line">        <span class="comment">//移除之前开启的同步屏障，同步屏障的添加和移除必须是成对出现的</span></span><br><span class="line">        mHandler.getLooper().getQueue().removeSyncBarrier(mTraversalBarrier);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mProfile) &#123;</span><br><span class="line">            Debug.startMethodTracing(<span class="string">&quot;ViewAncestor&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//真正开始执行绘制流程的地方</span></span><br><span class="line">        performTraversals();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mProfile) &#123;</span><br><span class="line">            Debug.stopMethodTracing();</span><br><span class="line">            mProfile = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到在<code>doTraversal()</code>方法中，首先是重置了<code>mTraversalScheduled</code>标志，让下次<code>scheduleTraversals()</code>不会被挡掉，然后移除了<strong>同步屏障</strong>，最后调用了<code>performTraversals()</code>方法，这里就是我们熟知的<code>measure</code>、<code>layout</code>、<code>draw</code>的地方了</p>
+
+  
+  
+    
+    <div class='footer'>
+      
+      
+      
+        <div class='copyright'>
+          <blockquote>
+            
+              
+                <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+              
+            
+              
+                <p>本文永久链接是：<a href=http://example.com/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/>http://example.com/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/</a></p>
+              
+            
+          </blockquote>
+        </div>
+      
+      
+    </div>
+  
+  
+    
+
+
+  <div class='article-meta' id="bottom">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-07-29T17:45:43+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：Jul 29, 2021</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/source/tags/Android/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Android</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/&title=UI刷新机制 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://example.com/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/&title=UI刷新机制 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2021/05/08/UI%E5%88%B7%E6%96%B0%E6%9C%BA%E5%88%B6/&title=UI刷新机制 - Serenade's Blog&summary="
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png" class="lazyload" data-srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=">
+          
+        </a>
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </div>
+
+
+  
+  
+
+  
+    <div class="prev-next">
+      
+        <a class='prev' href='/2021/08/02/Mac%E6%9F%A5%E7%9C%8BAndroid%E6%BA%90%E7%A0%81/'>
+          <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>阅读Android源码</p>
+          <p class='content'>阅读Android源码
+同步Android源码1. 
+
+</p>
+        </a>
+      
+      
+        <a class='next' href='/2021/05/08/Activity%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B/'>
+          <p class='title'>Activity显示流程<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'>Activity显示流程1234override fun onCreate(savedInstanceState: Bundle?) &#123;    super.onCreate(saved...</p>
+        </a>
+      
+    </div>
+  
+</article>
+
+
+  
+
+  <article class="post white-box reveal shadow" id="comments">
+    <p ct><i class='fas fa-comments'></i> 评论</p>
+    
+    <div id="valine_container" class="valine_thread">
+  <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+</div>
+
+  </article>
+
+
+
+
+
+
+</div>
+<aside class='l_side'>
+  
+  
+    
+    
+
+
+
+  <section class="widget toc-wrapper shadow desktop mobile" id="toc-div" >
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+        
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+
+		  
+		  <!--此文件用来存放一些不方便取值的变量-->
+<!--思路大概是将值藏到重加载的区域内-->
+
+<script>
+  window.pdata={}
+  pdata.ispage=true;
+  pdata.postTitle="UI刷新机制";
+  pdata.commentPath="";
+  pdata.commentPlaceholder="";
+  // header 这里无论是否开启pjax都需要
+  var l_header=document.getElementById("l_header");
+  
+  l_header.classList.add("show");
+  
+  
+    // cover
+    var cover_wrapper=document.querySelector('.cover-wrapper');
+    
+    cover_wrapper.id="none";
+    cover_wrapper.style.display="none";
+    
+  
+</script>
+
+        </div>
+        
+  
+  <footer class="footer clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+          
+            
+          
+            
+          
+        </div>
+      
+    
+      
+        <div><p>Blog content follows the <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+</div>
+      
+    
+      
+        
+          <div><p><span id="lc-sv">本站总访问量为 <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 次</span> <span id="lc-uv">访客数为 <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 人</span></p>
+</div>
+        
+      
+    
+      
+        Use
+        <a href="https://github.com/volantis-x/hexo-theme-volantis/tree/4.3.1" target="_blank" class="codename">Volantis</a>
+        as theme
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="/">Copyright © 2017-2020 XXX</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+
+        <a id="s-top" class="fas fa-arrow-up fa-fw" href="javascript:void(0)"></a>
+      </div>
+    </div>
+    <div>
+      <script>
+/************这个文件存放不需要重载的全局变量和全局函数*********/
+window.volantis={};
+window.volantis.loadcss=document.getElementById("loadcss");
+/******************** Pjax ********************************/
+function VPjax(){
+	this.list=[] // 存放回调函数
+	this.start=()=>{
+	  for(var i=0;i<this.list.length;i++){
+		this.list[i].run();
+	  }
+	}
+	this.push=(fn,name)=>{
+		var f=new PjaxItem(fn,name);
+		this.list.push(f);
+	}
+	// 构造一个可以run的对象
+	function PjaxItem(fn,name){
+		// 函数名称
+		this.name = name || fn.name
+		// run方法
+		this.run=()=>{
+			fn()
+		}
+	}
+}
+volantis.pjax={}
+volantis.pjax.method={
+	complete: new VPjax(),
+	error: new VPjax(),
+	send: new VPjax()
+}
+volantis.pjax={
+	...volantis.pjax,
+	push: volantis.pjax.method.complete.push,
+	error: volantis.pjax.method.error.push,
+	send: volantis.pjax.method.send.push
+}
+/********************脚本懒加载函数********************************/
+// 已经加入了setTimeout
+function loadScript(src, cb) {
+	setTimeout(function() {
+		var HEAD = document.getElementsByTagName('head')[0] || document.documentElement;
+		var script = document.createElement('script');
+		script.setAttribute('type','text/javascript');
+		if (cb) script.onload = cb;
+		script.setAttribute('src', src);
+		HEAD.appendChild(script);
+	});
+}
+//https://github.com/filamentgroup/loadCSS
+var loadCSS = function( href, before, media, attributes ){
+	var doc = window.document;
+	var ss = doc.createElement( "link" );
+	var ref;
+	if( before ){
+		ref = before;
+	}
+	else {
+		var refs = ( doc.body || doc.getElementsByTagName( "head" )[ 0 ] ).childNodes;
+		ref = refs[ refs.length - 1];
+	}
+	var sheets = doc.styleSheets;
+	if( attributes ){
+		for( var attributeName in attributes ){
+			if( attributes.hasOwnProperty( attributeName ) ){
+				ss.setAttribute( attributeName, attributes[attributeName] );
+			}
+		}
+	}
+	ss.rel = "stylesheet";
+	ss.href = href;
+	ss.media = "only x";
+	function ready( cb ){
+		if( doc.body ){
+			return cb();
+		}
+		setTimeout(function(){
+			ready( cb );
+		});
+	}
+	ready( function(){
+		ref.parentNode.insertBefore( ss, ( before ? ref : ref.nextSibling ) );
+	});
+	var onloadcssdefined = function( cb ){
+		var resolvedHref = ss.href;
+		var i = sheets.length;
+		while( i-- ){
+			if( sheets[ i ].href === resolvedHref ){
+				return cb();
+			}
+		}
+		setTimeout(function() {
+			onloadcssdefined( cb );
+		});
+	};
+	function loadCB(){
+		if( ss.addEventListener ){
+			ss.removeEventListener( "load", loadCB );
+		}
+		ss.media = media || "all";
+	}
+	if( ss.addEventListener ){
+		ss.addEventListener( "load", loadCB);
+	}
+	ss.onloadcssdefined = onloadcssdefined;
+	onloadcssdefined( loadCB );
+	return ss;
+};
+</script>
+<script>
+  
+  loadCSS("https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14/css/all.min.css", window.volantis.loadcss);
+  
+  
+  
+  
+</script>
+<!-- required -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5/dist/jquery.min.js"></script>
+
+<script>
+  function pjax_fancybox() {
+    $(".md .gallery").find("img").each(function () { //渲染 fancybox
+      var element = document.createElement("a"); // a 标签
+      $(element).attr("class", "fancybox");
+      $(element).attr("pjax-fancybox", "");  // 过滤 pjax
+      $(element).attr("href", $(this).attr("src"));
+      if ($(this).attr("data-original")) {
+        $(element).attr("href", $(this).attr("data-original"));
+      }
+      $(element).attr("data-fancybox", "images");
+      var caption = "";   // 描述信息
+      if ($(this).attr('alt')) {  // 判断当前页面是否存在描述信息
+        $(element).attr('data-caption', $(this).attr('alt'));
+        caption = $(this).attr('alt');
+      }
+      var div = document.createElement("div");
+      $(div).addClass("fancybox");
+      $(this).wrap(div); // 最外层套 div ，其实主要作用还是 class 样式
+      var span = document.createElement("span");
+      $(span).addClass("image-caption");
+      $(span).text(caption); // 加描述
+      $(this).after(span);  // 再套一层描述
+      $(this).wrap(element);  // 最后套 a 标签
+    })
+    $(".md .gallery").find("img").fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+      closeClick: true,
+      helpers: {
+        overlay: {closeClick: true}
+      },
+      buttons: [
+        "zoom",
+        "close"
+      ]
+    });
+  };
+  function SCload_fancybox() {
+    if ($(".md .gallery").find("img").length == 0) return;
+    loadCSS("https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css", document.getElementById("loadcss"));
+    loadScript('https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', pjax_fancybox)
+  };
+  $(function () {
+    SCload_fancybox();
+  });
+  function Pjax_SCload_fancybox(){
+	if (typeof $.fancybox == "undefined") {
+	 SCload_fancybox();
+    } else {
+	 pjax_fancybox();
+    }
+  }
+  volantis.pjax.push(Pjax_SCload_fancybox)
+  volantis.pjax.send(()=>{
+      if (typeof $.fancybox != "undefined") {
+        $.fancybox.close();    // 关闭弹窗
+      }
+  },'fancybox')
+</script>
+
+
+<!-- internal -->
+
+
+
+
+<script>
+  function loadIssuesJS() {
+    if ($(".md").find(".issues-api").length == 0) return;
+	
+	  loadScript('/js/issues.js');
+	
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  volantis.pjax.push(()=>{
+	if (typeof IssuesAPI == "undefined") {
+	  loadIssuesJS();
+	}
+  },"IssuesJS")
+</script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+
+
+  
+
+<script>
+  window.FPConfig = {
+	delay: 0,
+	ignoreKeywords: [],
+	maxRPS: 5,
+	hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+<script src="/js/valine.js"></script>
+
+
+<script>
+  function emoji(path, idx, ext) {
+    return path + "/" + path + "-" + idx + "." + ext;
+  }
+  var emojiMaps = {};
+  for (var i = 1; i <= 54; i++) {
+    emojiMaps['tieba-' + i] = emoji('tieba', i, 'png');
+  }
+  for (var i = 1; i <= 101; i++) {
+    emojiMaps['qq-' + i] = emoji('qq', i, 'gif');
+  }
+  for (var i = 1; i <= 116; i++) {
+    emojiMaps['aru-' + i] = emoji('aru', i, 'gif');
+  }
+  for (var i = 1; i <= 125; i++) {
+    emojiMaps['twemoji-' + i] = emoji('twemoji', i, 'png');
+  }
+  for (var i = 1; i <= 4; i++) {
+    emojiMaps['weibo-' + i] = emoji('weibo', i, 'png');
+  }
+  function pjax_valine() {
+    if(!document.querySelectorAll("#valine_container")[0])return;
+    let pagePlaceholder = pdata.commentPlaceholder || "快来评论吧~";
+    let path = pdata.commentPath;
+    if (path.length == 0) {
+      let defaultPath = '';
+      path = defaultPath || decodeURI(window.location.pathname);
+    }
+    var valine = new Valine();
+    valine.init(Object.assign({"path":null,"placeholder":"快来评论吧~","appId":null,"appKey":null,"meta":["nick","mail","link"],"requiredFields":["nick","mail"],"enableQQ":true,"recordIP":false,"avatar":"robohash","pageSize":10,"lang":"zh-cn","highlight":true,"mathJax":false}, {
+      el: '#valine_container',
+      path: path,
+      placeholder: pagePlaceholder,
+      emojiCDN: 'https://cdn.jsdelivr.net/gh/volantis-x/cdn-emoji/valine/',
+      emojiMaps: emojiMaps,
+    }))
+  }
+  $(function () {
+    pjax_valine();
+  });
+  volantis.pjax.push(pjax_valine);
+</script>
+
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+<!-- optional -->
+
+  <script>
+const SearchServiceimagePath="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/img/";
+const ROOT =  ("/" || "/").endsWith('/') ? ("/" || "/") : ("//" || "/" );
+
+$('.input.u-search-input').one('focus',function(){
+	
+		loadScript('/js/search/hexo.js',setSearchService);
+	
+})
+
+function listenSearch(){
+  
+    customSearch = new HexoSearch({
+      imagePath: SearchServiceimagePath
+    });
+  
+}
+function setSearchService() {
+	listenSearch();
+	
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script defer>
+
+  const LCCounter = {
+    app_id: 'u9j57bwJod4EDmXWdxrwuqQT-MdYXbMMI',
+    app_key: 'jfHtEKVE24j0IVCGHbvuFClp',
+    custom_api_server: '',
+
+    // 查询存储的记录
+    getRecord(Counter, url, title) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({url})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {url, title: title, times: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    },
+
+    // 发起自增请求
+    increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    },
+
+    // 构建自增请求体
+    buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "times": {
+            '__op': 'Increment',
+            'amount': 1
+          }
+        }
+      }
+    },
+
+    // 校验是否为有效的 UV
+    validUV() {
+      var key = 'LeanCloudUVTimestamp';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    },
+
+    addCount(Counter) {
+      var enableIncr = '' === 'true' && window.location.hostname !== 'localhost';
+      enableIncr = true;
+      var getterArr = [];
+      var incrArr = [];
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#lc-sv');
+      if (pvCtn || enableIncr) {
+        var pvGetter = this.getRecord(Counter, 'http://example.com' + '/#lc-sv', 'Visits').then((record) => {
+          incrArr.push(this.buildIncrement(record.objectId))
+          var eles = document.querySelectorAll('#lc-sv #number');
+          if (eles.length > 0) {
+            eles.forEach((el,index,array)=>{
+              el.innerText = record.times + 1;
+              if (pvCtn) {
+                pvCtn.style.display = 'inline';
+              }
+            })
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#lc-uv');
+      if (uvCtn || enableIncr) {
+        var uvGetter = this.getRecord(Counter, 'http://example.com' + '/#lc-uv', 'Visitors').then((record) => {
+          var vuv = this.validUV();
+          vuv && incrArr.push(this.buildIncrement(record.objectId))
+          var eles = document.querySelectorAll('#lc-uv #number');
+          if (eles.length > 0) {
+            eles.forEach((el,index,array)=>{
+              el.innerText = record.times + (vuv ? 1 : 0);
+              if (uvCtn) {
+                uvCtn.style.display = 'inline';
+              }
+            })
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 请求文章的浏览数，如果是当前页面就自增
+      var allPV = document.querySelectorAll('#lc-pv');
+      if (allPV.length > 0 || enableIncr) {
+        for (i = 0; i < allPV.length; i++) {
+          let pv = allPV[i];
+          let title = pv.getAttribute('data-title');
+          var url = 'http://example.com' + pv.getAttribute('data-path');
+          if (url) {
+            var viewGetter = this.getRecord(Counter, url, title).then((record) => {
+              // 是当前页面就自增
+              let curPath = window.location.pathname;
+              if (curPath.includes('index.html')) {
+                curPath = curPath.substring(0, curPath.lastIndexOf('index.html'));
+              }
+              if (pv.getAttribute('data-path') == curPath) {
+                incrArr.push(this.buildIncrement(record.objectId));
+              }
+              if (pv) {
+                var ele = pv.querySelector('#lc-pv #number');
+                if (ele) {
+                  if (pv.getAttribute('data-path') == curPath) {
+                    ele.innerText = (record.times || 0) + 1;
+                  } else {
+                    ele.innerText = record.times || 0;
+                  }
+                  pv.style.display = 'inline';
+                }
+              }
+            });
+            getterArr.push(viewGetter);
+          }
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && this.increment(Counter, incrArr);
+        })
+      }
+
+    },
+
+
+    fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': this.app_id,
+            'X-LC-Key': this.app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      this.addCount(Counter);
+    },
+
+    refreshCounter() {
+      var api_server = this.app_id.slice(-9) !== '-MdYXbMMI' ? this.custom_api_server : `https://${ this.app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+      if (api_server) {
+        this.fetchData(api_server);
+      } else {
+        fetch('https://app-router.leancloud.cn/2/route?appId=' + this.app_id)
+          .then(resp => resp.json())
+          .then(({api_server}) => {
+            this.fetchData('https://' + api_server);
+          });
+      }
+    }
+
+  };
+
+  LCCounter.refreshCounter();
+
+  document.addEventListener('pjax:complete', function () {
+    LCCounter.refreshCounter();
+  });
+</script>
+
+
+
+
+  <script>
+const rootElement = document.documentElement;
+const darkModeStorageKey = "user-color-scheme";
+const rootElementDarkModeAttributeName = "data-user-color-scheme";
+
+const setLS = (k, v) => {
+    localStorage.setItem(k, v);
+};
+
+const removeLS = (k) => {
+    localStorage.removeItem(k);
+};
+
+const getLS = (k) => {
+    return localStorage.getItem(k);
+};
+
+const getModeFromCSSMediaQuery = () => {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+};
+
+const resetRootDarkModeAttributeAndLS = () => {
+  rootElement.removeAttribute(rootElementDarkModeAttributeName);
+  removeLS(darkModeStorageKey);
+};
+
+const validColorModeKeys = {
+  dark: true,
+  light: true,
+};
+
+const applyCustomDarkModeSettings = (mode) => {
+  const currentSetting = mode || getLS(darkModeStorageKey);
+
+  if (currentSetting === getModeFromCSSMediaQuery()) {
+    resetRootDarkModeAttributeAndLS();
+  } else if (validColorModeKeys[currentSetting]) {
+    rootElement.setAttribute(rootElementDarkModeAttributeName, currentSetting);
+  } else {
+    resetRootDarkModeAttributeAndLS();
+  }
+};
+
+const invertDarkModeObj = {
+  dark: "light",
+  light: "dark",
+};
+
+/**
+ * get target mode
+ */
+const toggleCustomDarkMode = () => {
+  let currentSetting = getLS(darkModeStorageKey);
+
+  if (validColorModeKeys[currentSetting]) {
+    currentSetting = invertDarkModeObj[currentSetting];
+  } else if (currentSetting === null) {
+    currentSetting = invertDarkModeObj[getModeFromCSSMediaQuery()];
+  } else {
+    return;
+  }
+  setLS(darkModeStorageKey, currentSetting);
+  return currentSetting;
+};
+
+/**
+ * bind click event for toggle button
+ */
+var btn=$("#wrapper .toggle-mode-btn,#rightmenu-wrapper .toggle-mode-btn");
+function bindToggleButton() {
+    btn.on('click',(e) => {
+      const mode = toggleCustomDarkMode();
+      applyCustomDarkModeSettings(mode);
+    });
+}
+
+applyCustomDarkModeSettings();
+document.addEventListener("DOMContentLoaded", bindToggleButton);
+volantis.pjax.push(bindToggleButton);
+volantis.pjax.send(()=>{
+	btn.unbind('click');
+},'toggle-mode-btn-unbind');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function listennSidebarTOC() {
+  const navItems = document.querySelectorAll(".toc li");
+  if (!navItems.length) return;
+  const sections = [...navItems].map((element) => {
+    const link = element.querySelector(".toc-link");
+    const target = document.getElementById(
+      decodeURI(link.getAttribute("href")).replace("#", "")
+    );
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.scrollTo({
+		top: target.offsetTop + 100,
+		
+		behavior: "smooth"
+		
+	  });
+    });
+    return target;
+  });
+
+  function activateNavByIndex(target) {
+    if (target.classList.contains("active-current")) return;
+
+    document.querySelectorAll(".toc .active").forEach((element) => {
+      element.classList.remove("active", "active-current");
+    });
+    target.classList.add("active", "active-current");
+    let parent = target.parentNode;
+    while (!parent.matches(".toc")) {
+      if (parent.matches("li")) parent.classList.add("active");
+      parent = parent.parentNode;
+    }
+  }
+
+  function findIndex(entries) {
+    let index = 0;
+    let entry = entries[index];
+    if (entry.boundingClientRect.top > 0) {
+      index = sections.indexOf(entry.target);
+      return index === 0 ? 0 : index - 1;
+    }
+    for (; index < entries.length; index++) {
+      if (entries[index].boundingClientRect.top <= 0) {
+        entry = entries[index];
+      } else {
+        return sections.indexOf(entry.target);
+      }
+    }
+    return sections.indexOf(entry.target);
+  }
+
+  function createIntersectionObserver(marginTop) {
+    marginTop = Math.floor(marginTop + 10000);
+    let intersectionObserver = new IntersectionObserver(
+      (entries, observe) => {
+        let scrollHeight = document.documentElement.scrollHeight + 100;
+        if (scrollHeight > marginTop) {
+          observe.disconnect();
+          createIntersectionObserver(scrollHeight);
+          return;
+        }
+        let index = findIndex(entries);
+        activateNavByIndex(navItems[index]);
+      },
+      {
+        rootMargin: marginTop + "px 0px -100% 0px",
+        threshold: 0,
+      }
+    );
+    sections.forEach((element) => {
+      element && intersectionObserver.observe(element);
+    });
+  }
+  createIntersectionObserver(document.documentElement.scrollHeight);
+}
+
+document.addEventListener("DOMContentLoaded", listennSidebarTOC);
+document.addEventListener("pjax:success", listennSidebarTOC);
+</script>
+
+<!-- more -->
+
+ 
+	   
+	    
+
+
+<script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script>
+
+
+<script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      pjax = new Pjax({
+        elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([pjax-fancybox])',
+        selectors: [
+          "title",
+          
+          "#pjax-container",
+          "#pjax-header-nav-list"
+        ],
+        cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+        timeout: 5000
+      });
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+      //window.stop(); // 相当于点击了浏览器的停止按钮
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      window.subData = null; // 移除标题（用于一二级导航栏切换处）
+
+      volantis.$switcher.removeClass('active'); // 关闭移动端激活的搜索框
+      volantis.$header.removeClass('z_search-open'); // 关闭移动端激活的搜索框
+      volantis.$wrapper.removeClass('sub'); // 跳转页面时关闭二级导航
+
+      // 解绑事件 避免重复监听
+      volantis.$topBtn.unbind('click');
+      $('.menu a').unbind('click');
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+	  // 使用 volantis.pjax.send 方法传入pjax:send回调函数 参见layout/_partial/scripts/global.ejs
+	  volantis.pjax.method.send.start();
+    });
+
+    document.addEventListener('pjax:complete', function () {
+      $('.nav-main').find('.list-v').not('.menu-phone').removeAttr("style",""); // 移除小尾巴的移除
+      $('.menu-phone.list-v').removeAttr("style",""); // 移除小尾巴的移除
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+      try{
+		// 使用 volantis.pjax.push 方法传入重载函数 参见layout/_partial/scripts/global.ejs
+		volantis.pjax.method.complete.start();
+      } catch (e) {
+        console.log(e);
+      }
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+	  // 使用 volantis.pjax.error 方法传入pjax:error回调函数 参见layout/_partial/scripts/global.ejs
+	  volantis.pjax.method.error.start();
+      window.location.href = e.triggerElement.href;
+    });
+</script>
+ 
+	  
+    </div>
+  </body>
+</html>
